@@ -1,0 +1,1 @@
+{"event_size":88,"event_alignment":8,"header_size":40,"atomic_size_t_lock_free":true,"clock_pair":{"count":100000,"p50_ns":0,"p90_ns":0,"p99_ns":1000,"p999_ns":1000},"spsc_pair":{"count":100000,"p50_ns":0,"p90_ns":0,"p99_ns":1000,"p999_ns":1000},"queue_residence":{"count":100000,"p50_ns":2000,"p90_ns":11000,"p99_ns":21000,"p999_ns":24000}}

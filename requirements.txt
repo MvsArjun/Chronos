@@ -1,0 +1,9 @@
+numpy>=2.0,<3
+pandas>=2.2,<4
+scipy>=1.13,<2
+pybind11>=2.13,<4
+pyarrow>=17,<27
+requests>=2.32,<3
+cmake>=3.24
+ninja>=1.11
+psutil>=6,<8

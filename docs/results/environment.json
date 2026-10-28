@@ -1,0 +1,14 @@
+{
+  "cpu": "AMD Ryzen 5 6600H with Radeon Graphics",
+  "physical_cores": 6,
+  "logical_cores": 12,
+  "ram_bytes": 16312721408,
+  "os": "Windows-11-10.0.26300-SP0",
+  "compiler": "g++ (GCC) 16.2.0",
+  "flags": "CMake Release: -O3 -DNDEBUG; C++20; no native CPU flag",
+  "python": "3.12.8",
+  "dataset_events": 10000,
+  "dataset": "deterministic synthetic bars, seed=1, one instrument",
+  "clock": "steady_clock/perf_counter; no affinity pinning; desktop background load",
+  "memory_method": "10ms RSS sampling; Windows peak_wset if exposed; lower bound otherwise"
+}

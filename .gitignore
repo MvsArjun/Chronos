@@ -1,0 +1,15 @@
+build/
+.venv/
+.tools/
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.dll
+*.exe
+*.o
+*.a
+*.egg-info/
+.env
+.env.*
+!*.example

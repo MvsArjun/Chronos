@@ -1,0 +1,104 @@
+[
+  {
+    "name": "ctest",
+    "exit_code": 0,
+    "command": [
+      "ctest",
+      "--test-dir",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release",
+      "--output-on-failure"
+    ]
+  },
+  {
+    "name": "python-tests",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\work\\venv\\Scripts\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ]
+  },
+  {
+    "name": "numerical",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\work\\venv\\Scripts\\python.exe",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\tools\\validate_numerics.py",
+      "--output",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\docs\\results\\numerical.json"
+    ]
+  },
+  {
+    "name": "cli-generate",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\chronos_cli.exe",
+      "generate",
+      "10000",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\bars.csv"
+    ]
+  },
+  {
+    "name": "cli-pack",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\chronos_cli.exe",
+      "pack",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\bars.csv",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\bars.chr"
+    ]
+  },
+  {
+    "name": "cli-replay",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\chronos_cli.exe",
+      "replay",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\bars.chr"
+    ]
+  },
+  {
+    "name": "cli-pipeline",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\chronos_cli.exe",
+      "pipeline",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\bars.chr"
+    ]
+  },
+  {
+    "name": "cli-backtest",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\chronos_cli.exe",
+      "backtest",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\bars.chr",
+      "60000000000"
+    ]
+  },
+  {
+    "name": "cli-tick",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\chronos_cli.exe",
+      "backtest-tick",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\data\\samples\\ticks.csv"
+    ]
+  },
+  {
+    "name": "research-example",
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\work\\venv\\Scripts\\python.exe",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\examples\\research.py",
+      "--output",
+      "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\outputs\\chronos\\build\\release\\check-data\\research"
+    ]
+  }
+]

@@ -1,0 +1,219 @@
+{
+  "passed": 39,
+  "python": "3.12.8",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "seed": 20261028,
+  "checks": [
+    {
+      "name": "simple_returns",
+      "max_abs_error": 1.1102230246251565e-16,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "log_returns",
+      "max_abs_error": 8.617238866914789e-16,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "cumulative_return",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "annualized_volatility",
+      "max_abs_error": 1.6653345369377348e-16,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "sharpe_ratio",
+      "max_abs_error": 2.1649348980190553e-15,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "sortino_ratio",
+      "max_abs_error": 3.247402347028583e-15,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "maximum_drawdown",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "covariance",
+      "max_abs_error": 1.3552527156068805e-19,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "correlation",
+      "max_abs_error": 2.220446049250313e-16,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "portfolio_volatility",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "beta",
+      "max_abs_error": 6.245004513516506e-17,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "concentration",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "VaR_0.5",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "ES_0.5",
+      "max_abs_error": 5.204170427930421e-18,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "VaR_0.95",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "ES_0.95",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "VaR_0.975",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "ES_0.975",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "VaR_0.999",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "ES_0.999",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "singular_covariance",
+      "max_abs_error": 1.1926223897340549e-18,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "singular_portfolio",
+      "max_abs_error": 6.938893903907228e-18,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "constant_volatility",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "bankruptcy_drawdown",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "negative_cumulative_return",
+      "max_abs_error": 5.551115123125783e-17,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "one_observation_tail",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "large_return",
+      "max_abs_error": 0.0,
+      "atol": 2e-12,
+      "rtol": 2e-11
+    },
+    {
+      "name": "zero_variance_sharpe",
+      "expected_exception": true
+    },
+    {
+      "name": "long_constant_sharpe",
+      "expected_exception": true
+    },
+    {
+      "name": "constant_correlation",
+      "expected_exception": true
+    },
+    {
+      "name": "long_constant_beta",
+      "expected_exception": true
+    },
+    {
+      "name": "no_downside_sortino",
+      "expected_exception": true
+    },
+    {
+      "name": "missing_nan",
+      "expected_exception": true
+    },
+    {
+      "name": "nonfinite",
+      "expected_exception": true
+    },
+    {
+      "name": "small_sample",
+      "expected_exception": true
+    },
+    {
+      "name": "zero_price",
+      "expected_exception": true
+    },
+    {
+      "name": "indefinite_covariance",
+      "expected_exception": true
+    },
+    {
+      "name": "zero_market_variance",
+      "expected_exception": true
+    },
+    {
+      "name": "invalid_return",
+      "expected_exception": true
+    }
+  ]
+}

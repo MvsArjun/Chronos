@@ -1,0 +1,6 @@
+{
+  "wheel": "chronos_quant_engine-0.1.0-cp312-cp312-win_amd64.whl",
+  "isolated_target_import": true,
+  "backtest_position_quantity": 10,
+  "module": "C:\\Users\\mvsar\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-project\\work\\wheel-test\\chronos\\__init__.py"
+}

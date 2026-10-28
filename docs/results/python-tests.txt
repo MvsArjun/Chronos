@@ -1,0 +1,31 @@
+test_bar_backtest_requires_explicit_duration (test_cli.CliTests.test_bar_backtest_requires_explicit_duration) ... ok
+test_rejected_order_is_not_reported_as_fill_and_metadata_is_unspecified (test_cli.CliTests.test_rejected_order_is_not_reported_as_fill_and_metadata_is_unspecified) ... ok
+test_auth_endpoint_and_success (test_eulerpool.EulerpoolTests.test_auth_endpoint_and_success) ... ok
+test_bad_response_and_no_auth_retry (test_eulerpool.EulerpoolTests.test_bad_response_and_no_auth_retry) ... ok
+test_invalid_candles_and_range (test_eulerpool.EulerpoolTests.test_invalid_candles_and_range) ... ok
+test_network_error_is_sanitized (test_eulerpool.EulerpoolTests.test_network_error_is_sanitized) ... ok
+test_rate_limit_and_network_retry (test_eulerpool.EulerpoolTests.test_rate_limit_and_network_retry) ... ok
+test_batch_items_are_copies_and_native_runs_are_independent (test_integration.IntegrationTests.test_batch_items_are_copies_and_native_runs_are_independent) ... ok
+test_configuration_is_snapshotted_before_callbacks (test_integration.IntegrationTests.test_configuration_is_snapshotted_before_callbacks) ... ok
+test_python_callback_ownership_survives_backtest_and_replay (test_integration.IntegrationTests.test_python_callback_ownership_survives_backtest_and_replay) ... ok
+test_python_strategy_exceptions_propagate (test_integration.IntegrationTests.test_python_strategy_exceptions_propagate) ... ok
+test_replay_storage_backtest_and_report_repeatability (test_integration.IntegrationTests.test_replay_storage_backtest_and_report_repeatability) ... ok
+test_all_types_and_extreme_unsigned_sequence_preserve_precision (test_parquet.ParquetTests.test_all_types_and_extreme_unsigned_sequence_preserve_precision) ... ok
+test_binary_layout_and_crc_against_independent_python_reference (test_parquet.ParquetTests.test_binary_layout_and_crc_against_independent_python_reference) ... ok
+test_csv_conversion_and_empty_batch (test_parquet.ParquetTests.test_csv_conversion_and_empty_batch) ... ok
+test_missing_version_and_type_coercion_are_rejected (test_parquet.ParquetTests.test_missing_version_and_type_coercion_are_rejected) ... ok
+test_nulls_and_invalid_event_values_are_rejected (test_parquet.ParquetTests.test_nulls_and_invalid_event_values_are_rejected) ... ok
+test_all_factors_and_future_execution (test_research.ResearchTests.test_all_factors_and_future_execution) ... ok
+test_factor_overflow_is_an_explicit_error (test_research.ResearchTests.test_factor_overflow_is_an_explicit_error) ... ok
+test_future_price_and_fundamental_do_not_change_past_snapshot (test_research.ResearchTests.test_future_price_and_fundamental_do_not_change_past_snapshot) ... ok
+test_hand_calculated_delayed_factor_return (test_research.ResearchTests.test_hand_calculated_delayed_factor_return) ... ok
+test_late_record_is_unavailable_and_publication_is_enforced (test_research.ResearchTests.test_late_record_is_unavailable_and_publication_is_enforced) ... ok
+test_missing_universe_and_naive_timestamps_fail (test_research.ResearchTests.test_missing_universe_and_naive_timestamps_fail) ... ok
+test_repeatability_and_costs (test_research.ResearchTests.test_repeatability_and_costs) ... ok
+test_stable_ties_and_missing_values (test_research.ResearchTests.test_stable_ties_and_missing_values) ... ok
+test_turnover_uses_drifted_weights (test_research.ResearchTests.test_turnover_uses_drifted_weights) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 4.849s
+
+OK

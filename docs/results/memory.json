@@ -1,0 +1,5 @@
+{
+  "benchmark_process_peak_rss_bytes": 8605696,
+  "includes": "Google Benchmark, datasets, allocator experiments, transport threads",
+  "method": "10ms RSS sampling; Windows peak_wset if exposed; lower bound otherwise"
+}
