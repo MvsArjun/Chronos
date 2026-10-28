@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="57" failures="0" disabled="0" errors="0" time="0.077" timestamp="2026-10-28T16:42:04.517" name="AllTests">
+  <testsuite name="Returns" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.517">
+    <testcase name="HandCalculated" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="9" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Returns" />
+    <testcase name="InvalidAndExtreme" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="18" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Returns" />
+  </testsuite>
+  <testsuite name="Metrics" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.517">
+    <testcase name="HandCalculated" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="27" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Metrics" />
+    <testcase name="DenominatorsAndMissingDataAreExplicit" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="35" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Metrics" />
+    <testcase name="StableLargeOffsetsAndSmallCovariance" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="149" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Metrics" />
+    <testcase name="LongConstantSamplesRemainExactlyConstant" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="158" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Metrics" />
+  </testsuite>
+  <testsuite name="Covariance" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.517">
+    <testcase name="SingularMatrixAndBeta" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="45" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Covariance" />
+    <testcase name="RejectsInvalidMatrices" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="57" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Covariance" />
+    <testcase name="RankDeficientUnequalScalesAndPermutation" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="66" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Covariance" />
+    <testcase name="ValidationToleranceDoesNotEraseSmallPositiveVariance" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="82" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Covariance" />
+  </testsuite>
+  <testsuite name="Tails" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.517">
+    <testcase name="ExactEmpiricalTailMass" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="93" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Tails" />
+    <testcase name="DecimalConfidenceBoundariesMatchDoubleEmpiricalCDF" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="102" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Tails" />
+  </testsuite>
+  <testsuite name="Risk" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.517">
+    <testcase name="Concentration" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="108" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Risk" />
+  </testsuite>
+  <testsuite name="Arithmetic" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.022" timestamp="2026-10-28T16:42:04.517">
+    <testcase name="FixedPointBoundaries" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="113" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.517" classname="Arithmetic" />
+    <testcase name="MultiplicationAgainstWideIntegerOracle" file="/home/chronos/verification/chronos/tests/analytics_tests.cpp" line="130" status="run" result="completed" time="0.022" timestamp="2026-10-28T16:42:04.517" classname="Arithmetic" />
+  </testsuite>
+  <testsuite name="Core" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.540">
+    <testcase name="CheckedArithmetic" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="9" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.540" classname="Core" />
+  </testsuite>
+  <testsuite name="Ring" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0.008" timestamp="2026-10-28T16:42:04.540">
+    <testcase name="EmptyFullWrapAndMoveOwnership" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="19" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.540" classname="Ring" />
+    <testcase name="NonemptyDestructionReleasesObjects" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="31" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.540" classname="Ring" />
+    <testcase name="ConcurrentFifoStress" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="36" status="run" result="completed" time="0.008" timestamp="2026-10-28T16:42:04.540" classname="Ring" />
+  </testsuite>
+  <testsuite name="Pipeline" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0.033" timestamp="2026-10-28T16:42:04.548">
+    <testcase name="BlockingAndFifo" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="53" status="run" result="completed" time="0.006" timestamp="2026-10-28T16:42:04.548" classname="Pipeline" />
+    <testcase name="DropSaturationMaintainsSubsequence" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="58" status="run" result="completed" time="0.002" timestamp="2026-10-28T16:42:04.555" classname="Pipeline" />
+    <testcase name="FailFastAndHandlerExceptionsJoinProducer" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="67" status="run" result="completed" time="0.022" timestamp="2026-10-28T16:42:04.557" classname="Pipeline" />
+    <testcase name="ShutdownDuringActivityDrainsAcceptedEvents" file="/home/chronos/verification/chronos/tests/concurrency_tests.cpp" line="72" status="run" result="completed" time="0.002" timestamp="2026-10-28T16:42:04.579" classname="Pipeline" />
+  </testsuite>
+  <testsuite name="Data" tests="8" failures="0" disabled="0" skipped="0" errors="0" time="0.011" timestamp="2026-10-28T16:42:04.582">
+    <testcase name="CsvAllPayloadsCanonicalRoundTrip" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="41" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.582" classname="Data" />
+    <testcase name="CsvSerializationIsIndependentOfGlobalNumericLocale" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="53" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.582" classname="Data" />
+    <testcase name="CsvRejectsInvalidAndAmbiguousRows" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="67" status="run" result="completed" time="0.004" timestamp="2026-10-28T16:42:04.582" classname="Data" />
+    <testcase name="ResourceLimitsAndEmptyDatasets" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="83" status="run" result="completed" time="0.001" timestamp="2026-10-28T16:42:04.587" classname="Data" />
+    <testcase name="CsvLineEndingsFinalRowAndBoundedInput" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="95" status="run" result="completed" time="0.001" timestamp="2026-10-28T16:42:04.589" classname="Data" />
+    <testcase name="BinaryDeterministicExplicitEndianAndRoundTrip" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="106" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.590" classname="Data" />
+    <testcase name="BinaryRejectsCorruptionTruncationTrailingAndVersion" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="124" status="run" result="completed" time="0.002" timestamp="2026-10-28T16:42:04.590" classname="Data" />
+    <testcase name="SyntheticFixturesAreDeterministicAndValidated" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="141" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Data" />
+  </testsuite>
+  <testsuite name="Replay" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.593">
+    <testcase name="AvailabilityOrderingTieBreakingAndClock" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="153" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Replay" />
+    <testcase name="DuplicateSequencesAndInvalidHeadersRejected" file="/home/chronos/verification/chronos/tests/data_tests.cpp" line="171" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Replay" />
+  </testsuite>
+  <testsuite name="Portfolio" tests="5" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.593">
+    <testcase name="IndependentlyCalculatedReversalAndFeeLedger" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="29" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Portfolio" />
+    <testcase name="DividendAndExactSplitPreserveLedgerIdentity" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="51" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Portfolio" />
+    <testcase name="OverflowAndInvalidFillDoNotMutateLedger" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="65" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Portfolio" />
+    <testcase name="ExactCostAllocationSupportsLargeNotionalWithoutWideIntegers" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="74" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Portfolio" />
+    <testcase name="RandomTransitionsMatchIndependentFractionalAverageReference" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="80" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.593" classname="Portfolio" />
+  </testsuite>
+  <testsuite name="Execution" tests="17" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.594">
+    <testcase name="BarOrdersUseOnlyLaterOpenAndSharedAssumedLiquidity" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="108" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="LimitCannotFillFromBarHighLowOrAdverseSlipBeyondLimit" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="127" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="QuoteSpreadAndPartialLiquidityAreSharedFifo" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="142" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="RejectsInsufficientCashAndUncoveredSell" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="156" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="CashRiskAlsoCoversFeesOnSell" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="165" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="CancelAfterObservationAndCancelOnSplit" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="178" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="RejectsDelayedCorporateActionsBeforeStrategyCallbacks" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="194" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="CorporateActionsPrecedeSameInstrumentMarketEventsAtEffectiveTime" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="209" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="RegressingExchangeTimeIsRejectedBeforeAnyCallbacks" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="229" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="DelayedBarsAreRejectedBeforeAnyCallbacks" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="243" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="StaleBboCannotFillOrReplaceTheCurrentMark" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="259" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="PostSplitOldPricesAreRejectedBeforeAnyCallbacks" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="274" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="SameTimeSequenceRegressionsAreRejectedPerInstrument" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="287" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="BarModelRejectsMixedEventsAndMultipleInstruments" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="303" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="BarModelRequiresDistinctNonoverlappingFixedGridIntervals" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="313" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="DelayedBarCannotSpendProceedsFromALaterEconomicOpen" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="329" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+    <testcase name="IdenticalInputAndFreshStrategiesProduceIdenticalLedger" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="348" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Execution" />
+  </testsuite>
+  <testsuite name="Strategies" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T16:42:04.594">
+    <testcase name="MovingAverageObservesTrailingClosesAndTradesLaterOpens" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="362" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Strategies" />
+    <testcase name="MovingAverageResetsOnSplit" file="/home/chronos/verification/chronos/tests/execution_tests.cpp" line="379" status="run" result="completed" time="0." timestamp="2026-10-28T16:42:04.594" classname="Strategies" />
+  </testsuite>
+</testsuites>

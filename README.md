@@ -13,7 +13,7 @@ equivalent of any firm's private infrastructure.
   deterministic synthetic data and availability-aware replay.
 * Bounded SPSC queue with verified lock-free index atomics, explicit backpressure,
   graceful shutdown and concurrent FIFO stress tests.
-* Distinct next-open bar and displayed-quote execution, market/limit/cancel,
+* Single-instrument next-open bar and multi-instrument displayed-quote execution, market/limit/cancel,
   partial fills, costs and fill-time cash/position checks.
 * Position reversals, proportional integer cost allocation, realized/unrealized
   P&L, cash/equity, fees, dividends, exact integral splits and exposure metrics.
@@ -23,9 +23,11 @@ equivalent of any firm's private infrastructure.
 * GoogleTest, Google Benchmark, independent NumPy/SciPy references, reproducible
   CLI/Python workflows and saved audit/measurement evidence.
 
-The local verified environment is **Windows 11, GCC 16.2.0, Python 3.12.8**. Linux
-GCC/Clang and sanitizer presets/CI are supplied but have **not been executed** in
-this Windows-only session. See [audit](docs/audit-report.md) for acceptance status.
+Verified on **Windows 11/GCC 16.2** and **Ubuntu 24.04.5/GCC 13.3/Clang 18.1**.
+All six Linux Release and separate ASan+UBSan/TSan configurations passed. Each
+build passed 57 C++ tests; Release workflows passed 26 Python tests and 47
+independent numerical checks. See [verification evidence](docs/pre-upload-verification.md)
+and the [audit](docs/audit-report.md) for scope and model limitations.
 
 ## Build on Linux (primary intended target)
 
@@ -58,6 +60,7 @@ cmake --build --preset tsan -j 4
 ctest --preset tsan
 ```
 
+See [sanitizer runtime setup](docs/sanitizers.md) for the Ubuntu mmap-layout precondition.
 TSan requires a compatible Linux compiler/runtime/kernel. Failures or unavailable
 runtimes must not be counted as successful race checks. To build only the C++ CLI,
 configure with `-DCHRONOS_TESTS=OFF -DCHRONOS_BENCHMARKS=OFF -DCHRONOS_PYTHON=OFF`.
@@ -141,7 +144,7 @@ concurrent replay, CLI execution and the full research/report example. Unit,
 integration, randomized invariant, concurrency and regression tests live in
 `tests/`; they use fixed seeds and hand-computed fixtures. Their execution does not
 require credentials. Reports under [docs/results](docs/results/) are actual local
-outputs; do not confuse supplied CI configuration with an executed CI run.
+outputs; the local Linux matrix is executed evidence, while the supplied GitHub workflow is a separate run.
 
 With clang tools installed: `clang-format -i include/chronos/**/*.hpp src/*.cpp`
 (expand paths as appropriate), and `clang-tidy -p build/release src/main.cpp`.
@@ -158,7 +161,9 @@ method and raw measurements are saved with the performance report.
 * [Measured performance](docs/performance.md), [engineering audit](docs/audit-report.md)
 * [Phases and gates](docs/implementation-plan.md), [Eulerpool review](docs/eulerpool.md)
 
-Datasets are batch-materialized with resource caps, not streamed from a live
+Backtests reject per-instrument economic-time regressions. Bar input must be a
+timely, single-instrument, pure-Bar fixed grid; tick execution supports multiple
+instruments. Datasets are batch-materialized with resource caps, not streamed from a live
 venue. No full order-book reconstruction, margin/borrow/FX model, fractional
 corporate-action settlement, survivorship-free instrument master or verified
 live vendor history is supplied. Research price adjustments/universe quality are

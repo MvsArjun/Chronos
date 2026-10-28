@@ -174,30 +174,73 @@ inline double portfolio_volatility(const std::vector<double>& weights, const Mat
         if (row.size() != d) throw std::invalid_argument("covariance must be square");
         for (auto v : row) { detail::finite(v); scale = std::max(scale, std::abs(static_cast<long double>(v))); }
     }
-    const auto tolerance = 128 * std::numeric_limits<double>::epsilon() * std::max(scale, std::numeric_limits<long double>::min()) * static_cast<long double>(d);
+    if (scale == 0) return 0;
+    const auto tolerance = std::max(
+        128 * std::numeric_limits<double>::epsilon() * scale * static_cast<long double>(d),
+        std::numeric_limits<long double>::denorm_min());
     for (std::size_t i = 0; i < d; ++i)
         for (std::size_t j = 0; j < i; ++j)
             if (std::abs(static_cast<long double>(covariance_matrix[i][j]) - covariance_matrix[j][i]) > tolerance)
                 throw std::invalid_argument("covariance must be symmetric");
-    // Semidefinite Cholesky with explicit zero-pivot handling: singular covariance is supported.
-    std::vector<std::vector<long double>> l(d, std::vector<long double>(d));
+    // Validate C + tolerance*I, using the largest remaining diagonal as pivot.
+    // The validation-only shift bounds the admitted negative eigenvalue error
+    // and prevents rank-deficient roundoff from becoming a tiny divisor. The
+    // original matrix below still determines the reported portfolio variance.
+    std::vector<std::vector<long double>> residual(d, std::vector<long double>(d));
     for (std::size_t i = 0; i < d; ++i) {
-        for (std::size_t j = 0; j <= i; ++j) {
-            long double residual = covariance_matrix[i][j];
-            for (std::size_t k = 0; k < j; ++k) residual -= l[i][k] * l[j][k];
-            if (i == j) {
-                if (residual < -tolerance) throw std::invalid_argument("covariance is not positive semidefinite");
-                l[i][j] = std::sqrt(std::max(residual, 0.0L));
-            } else if (l[j][j] == 0) {
-                if (std::abs(residual) > tolerance) throw std::invalid_argument("covariance is not positive semidefinite");
-            } else { l[i][j] = residual / l[j][j]; }
+        for (std::size_t j = 0; j < d; ++j) {
+            residual[i][j] = static_cast<long double>(covariance_matrix[i][j]) / 2
+                             + static_cast<long double>(covariance_matrix[j][i]) / 2;
+        }
+        residual[i][i] += tolerance;
+    }
+    std::vector<long double> column(d);
+    for (std::size_t k = 0; k < d; ++k) {
+        auto pivot = k;
+        for (std::size_t i = k + 1; i < d; ++i)
+            if (residual[i][i] > residual[pivot][pivot]) pivot = i;
+        if (pivot != k) {
+            std::swap(residual[k], residual[pivot]);
+            for (auto& row : residual) std::swap(row[k], row[pivot]);
+        }
+        const auto diagonal = residual[k][k];
+        if (!std::isfinite(diagonal) || diagonal <= 0)
+            throw std::invalid_argument("covariance is not positive semidefinite within tolerance");
+        const auto root = std::sqrt(diagonal);
+        for (std::size_t i = k + 1; i < d; ++i) column[i] = residual[i][k] / root;
+        for (std::size_t i = k + 1; i < d; ++i) {
+            for (std::size_t j = i; j < d; ++j) {
+                residual[j][i] -= column[j] * column[i];
+                residual[i][j] = residual[j][i];
+            }
         }
     }
-    long double variance = 0;
-    for (std::size_t j = 0; j < d; ++j) {
-        long double weighted = 0;
-        for (std::size_t i = j; i < d; ++i) weighted += weights[i] * l[i][j];
-        variance += weighted * weighted;
+
+    // Compensated quadratic form on C, not its validation factor: a genuine
+    // small positive variance is retained even below the matrix-wide tolerance.
+    long double sum = 0, correction = 0, weight_norm_squared = 0;
+    const auto accumulate = [&](long double term) {
+        const auto next = sum + term;
+        correction += std::abs(sum) >= std::abs(term) ? (sum - next) + term : (term - next) + sum;
+        sum = next;
+    };
+    for (std::size_t i = 0; i < d; ++i) {
+        const auto wi = static_cast<long double>(weights[i]);
+        weight_norm_squared += wi * wi;
+        accumulate(wi * covariance_matrix[i][i] * wi);
+        for (std::size_t j = 0; j < i; ++j) {
+            const auto symmetric = static_cast<long double>(covariance_matrix[i][j]) / 2
+                                   + static_cast<long double>(covariance_matrix[j][i]) / 2;
+            accumulate(2 * wi * symmetric * weights[j]);
+        }
+    }
+    auto variance = sum + correction;
+    if (!std::isfinite(variance) || !std::isfinite(weight_norm_squared))
+        throw std::overflow_error("portfolio quadratic form overflow");
+    if (variance < 0) {
+        if (-variance > tolerance * weight_norm_squared)
+            throw std::invalid_argument("negative portfolio variance exceeds covariance tolerance");
+        variance = 0;
     }
     return detail::output(std::sqrt(variance * periods_per_year));
 }
@@ -219,7 +262,10 @@ inline double beta(const std::vector<double>& asset, const std::vector<double>& 
 
 inline double historical_var(const std::vector<double>& returns, double confidence = .95) {
     auto losses = detail::losses(returns, confidence);
-    const auto rank = static_cast<std::size_t>(std::ceil(static_cast<long double>(confidence) * losses.size()));
+    // Match the public double-precision confidence contract and NumPy's empirical
+    // inverse-CDF boundary behavior. Widening 0.9 before multiplying by 10 can
+    // incorrectly move a user-specified 90% quantile to the tenth observation.
+    const auto rank = static_cast<std::size_t>(std::ceil(confidence * static_cast<double>(losses.size())));
     return losses[std::min(rank - 1, losses.size() - 1)];
 }
 

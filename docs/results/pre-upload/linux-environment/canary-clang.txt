@@ -1,0 +1,21 @@
+==9553==WARNING: invalid path to external symbolizer!
+==9553==WARNING: Failed to use and restart external symbolizer!
+==================
+WARNING: ThreadSanitizer: data race (pid=9553)
+  Write of size 4 at 0x7fffb9d94ebc by main thread:
+    #0 <null> <null> (chronos-tsan-canary-clang+0xe0b9b) (BuildId: bd983edfe71b8e0e624dce430b635aea1dc9ae99)
+    #1 <null> <null> (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Previous write of size 4 at 0x7fffb9d94ebc by thread T1:
+    #0 <null> <null> (chronos-tsan-canary-clang+0xe0ca2) (BuildId: bd983edfe71b8e0e624dce430b635aea1dc9ae99)
+    #1 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is stack of main thread.
+
+  Thread T1 (tid=9555, finished) created by main thread at:
+    #0 <null> <null> (chronos-tsan-canary-clang+0x6062f) (BuildId: bd983edfe71b8e0e624dce430b635aea1dc9ae99)
+    #1 <null> <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 <null> <null> (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race (/tmp/chronos-tsan-canary-clang+0xe0b9b) (BuildId: bd983edfe71b8e0e624dce430b635aea1dc9ae99) 
+==================

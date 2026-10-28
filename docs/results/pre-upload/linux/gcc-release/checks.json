@@ -1,0 +1,104 @@
+[
+  {
+    "name": "ctest",
+    "exit_code": 0,
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/chronos/verification/chronos/build/verify-gcc-release",
+      "--output-on-failure"
+    ]
+  },
+  {
+    "name": "python-tests",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/home/chronos/verification/chronos/tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ]
+  },
+  {
+    "name": "numerical",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification-venv/bin/python",
+      "/home/chronos/verification/chronos/tools/validate_numerics.py",
+      "--output",
+      "/home/chronos/verification/chronos/docs/results/pre-upload/linux/gcc-release/numerical.json"
+    ]
+  },
+  {
+    "name": "cli-generate",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification/chronos/build/verify-gcc-release/chronos_cli",
+      "generate",
+      "10000",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/bars.csv"
+    ]
+  },
+  {
+    "name": "cli-pack",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification/chronos/build/verify-gcc-release/chronos_cli",
+      "pack",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/bars.csv",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/bars.chr"
+    ]
+  },
+  {
+    "name": "cli-replay",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification/chronos/build/verify-gcc-release/chronos_cli",
+      "replay",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/bars.chr"
+    ]
+  },
+  {
+    "name": "cli-pipeline",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification/chronos/build/verify-gcc-release/chronos_cli",
+      "pipeline",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/bars.chr"
+    ]
+  },
+  {
+    "name": "cli-backtest",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification/chronos/build/verify-gcc-release/chronos_cli",
+      "backtest",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/bars.chr",
+      "60000000000"
+    ]
+  },
+  {
+    "name": "cli-tick",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification/chronos/build/verify-gcc-release/chronos_cli",
+      "backtest-tick",
+      "/home/chronos/verification/chronos/data/samples/ticks.csv"
+    ]
+  },
+  {
+    "name": "research-example",
+    "exit_code": 0,
+    "command": [
+      "/home/chronos/verification-venv/bin/python",
+      "/home/chronos/verification/chronos/examples/research.py",
+      "--output",
+      "/home/chronos/verification/chronos/build/verify-gcc-release/check-data/research"
+    ]
+  }
+]

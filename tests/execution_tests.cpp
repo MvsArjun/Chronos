@@ -19,9 +19,11 @@ Event quote(std::uint64_t seq, Price bid, Price ask, Quantity size = 10) {
 }
 class Plan final : public Strategy {
 public:
+    std::size_t event_calls{}, execution_calls{};
     std::map<std::uint64_t, std::vector<OrderRequest>> orders;
     std::map<std::uint64_t, std::vector<std::uint64_t>> cancellations;
-    std::vector<OrderRequest> on_event(const Event& event, const Portfolio&) override { return orders[event.header.sequence]; }
+    std::vector<OrderRequest> on_event(const Event& event, const Portfolio&) override { ++event_calls; return orders[event.header.sequence]; }
+    void on_execution(const ExecutionReport&, const Portfolio&) override { ++execution_calls; }
     std::vector<std::uint64_t> cancel_orders(const Event& event, const Portfolio&) override { return cancellations[event.header.sequence]; }
 };
 TEST(Portfolio, IndependentlyCalculatedReversalAndFeeLedger) {
@@ -183,7 +185,9 @@ TEST(Execution, CancelAfterObservationAndCancelOnSplit) {
     Plan split_plan;
     split_plan.orders[1] = {{1, 1, Side::Buy, OrderType::Market, 1, 0}};
     Event split{{2, 2, 2, 2, 1}, Split{2, 1}};
-    r = run_backtest({bar(1, 100, 100), split, bar(3, 50, 50)}, split_plan, 1000);
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    r = run_backtest({quote(1, 90, 110), split, quote(3, 45, 55)}, split_plan, 1000, tick);
     ASSERT_EQ(r.reports.size(), 1U);
     EXPECT_EQ(r.reports[0].status, ExecutionStatus::Cancelled);
 }
@@ -193,46 +197,50 @@ TEST(Execution, RejectsDelayedCorporateActionsBeforeStrategyCallbacks) {
         int calls{};
         std::vector<OrderRequest> on_event(const Event&, const Portfolio&) override { ++calls; return {}; }
     } strategy;
-    const Event delayed_dividend{{1, 3, 3, 3, 1}, Dividend{10}};
-    const Event delayed_split{{1, 3, 3, 3, 1}, Split{2, 1}};
-    EXPECT_THROW(run_backtest({bar(1, 100, 100), bar(2, 100, 100), delayed_dividend}, strategy, 1000), std::invalid_argument);
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    const Event delayed_dividend{{3, 4, 4, 3, 1}, Dividend{10}};
+    const Event delayed_split{{3, 4, 4, 3, 1}, Split{2, 1}};
+    EXPECT_THROW(run_backtest({quote(1, 90, 110), quote(2, 90, 110), delayed_dividend}, strategy, 1000, tick), std::invalid_argument);
     EXPECT_EQ(strategy.calls, 0);
-    EXPECT_THROW(run_backtest({bar(1, 100, 100), bar(2, 100, 100), delayed_split}, strategy, 1000), std::invalid_argument);
+    EXPECT_THROW(run_backtest({quote(1, 90, 110), quote(2, 90, 110), delayed_split}, strategy, 1000, tick), std::invalid_argument);
     EXPECT_EQ(strategy.calls, 0);
 }
 TEST(Execution, CorporateActionsPrecedeSameInstrumentMarketEventsAtEffectiveTime) {
-    auto market = bar(1, 100, 100);
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    auto market = quote(1, 90, 110);
     market.header.event_time = market.header.receive_time = market.header.available_time = 2;
     const Event dividend{{2, 2, 2, 2, 1}, Dividend{10}};
     BuyAndHold invalid;
-    EXPECT_THROW(run_backtest({market, dividend}, invalid, 1000), std::invalid_argument);
+    EXPECT_THROW(run_backtest({market, dividend}, invalid, 1000, tick), std::invalid_argument);
     // Explicit dataset sequence provides action priority without changing the
     // shared replay tie-break convention.
     const Event first_dividend{{2, 2, 2, 1, 1}, Dividend{10}};
     market.header.sequence = 2;
     BuyAndHold valid;
-    EXPECT_NO_THROW(run_backtest({first_dividend, market}, valid, 1000));
+    EXPECT_NO_THROW(run_backtest({first_dividend, market}, valid, 1000, tick));
     // Equal times for a different instrument do not constrain action ordering.
     market.header.sequence = 1;
     market.header.instrument = 2;
     BuyAndHold other_instrument;
-    EXPECT_NO_THROW(run_backtest({market, dividend}, other_instrument, 1000));
+    EXPECT_NO_THROW(run_backtest({market, dividend}, other_instrument, 1000, tick));
 }
-TEST(Execution, NoFillOnLateTickOrTradeAndStrictInputValidation) {
+TEST(Execution, RegressingExchangeTimeIsRejectedBeforeAnyCallbacks) {
     ExecutionConfig config;
     config.model = ExecutionModel::Tick;
-    BuyAndHold strategy(1, 2);
+    Plan strategy;
     auto late = quote(2, 90, 110);
     late.header.event_time = 0;
     Event trade{{3, 3, 3, 3, 1}, Trade{100, 1000}};
-    const auto r = run_backtest({quote(1, 90, 110), late, trade, quote(4, 90, 110)}, strategy, 1000, config);
-    ASSERT_EQ(r.reports.size(), 1U);
-    EXPECT_EQ(r.reports[0].time, 4);
+    EXPECT_THROW(run_backtest({quote(1, 90, 110), late, trade, quote(4, 90, 110)}, strategy, 1000, config), std::invalid_argument);
+    EXPECT_EQ(strategy.event_calls, 0U);
+    EXPECT_EQ(strategy.execution_calls, 0U);
     BuyAndHold invalid;
     EXPECT_THROW(run_backtest({bar(2, 100, 100), bar(1, 100, 100)}, invalid), std::invalid_argument);
     EXPECT_THROW(run_backtest({bar(1, 100, 100), bar(1, 100, 100)}, invalid), std::invalid_argument);
 }
-TEST(Execution, DelayedBarSignalCannotFillAnOpenThatAlreadyHappened) {
+TEST(Execution, DelayedBarsAreRejectedBeforeAnyCallbacks) {
     ExecutionConfig config;
     config.bar_duration_ns = 2;
     auto first = bar(1, 100, 100);
@@ -243,11 +251,99 @@ TEST(Execution, DelayedBarSignalCannotFillAnOpenThatAlreadyHappened) {
     second.header.event_time = second.header.receive_time = second.header.available_time = 4;
     auto third = bar(3, 120, 120);
     third.header.event_time = third.header.receive_time = third.header.available_time = 6;
-    BuyAndHold strategy(1, 1);
-    const auto r = run_backtest({first, second, third}, strategy, 1000, config);
-    ASSERT_EQ(r.reports.size(), 1U);
-    EXPECT_EQ(r.reports[0].time, 6);
-    EXPECT_EQ(r.reports[0].price, 120);
+    Plan strategy;
+    EXPECT_THROW(run_backtest({first, second, third}, strategy, 1000, config), std::invalid_argument);
+    EXPECT_EQ(strategy.event_calls, 0U);
+    EXPECT_EQ(strategy.execution_calls, 0U);
+}
+TEST(Execution, StaleBboCannotFillOrReplaceTheCurrentMark) {
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    auto recent = quote(2, 190, 200);
+    recent.header.event_time = recent.header.receive_time = recent.header.available_time = 3;
+    auto stale = quote(3, 100, 110);
+    stale.header.event_time = 2;
+    stale.header.receive_time = stale.header.available_time = 4;
+    Plan strategy;
+    strategy.orders[1] = {{1, 1, Side::Buy, OrderType::Limit, 1, 150}};
+    EXPECT_THROW(run_backtest({quote(1, 100, 110), recent, stale}, strategy, 1000, tick), std::invalid_argument);
+    // Full-input rejection prevents any fill, mark, indicator update or callback.
+    EXPECT_EQ(strategy.event_calls, 0U);
+    EXPECT_EQ(strategy.execution_calls, 0U);
+}
+TEST(Execution, PostSplitOldPricesAreRejectedBeforeAnyCallbacks) {
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    const Event split{{3, 3, 3, 3, 1}, Split{2, 1}};
+    auto stale = quote(4, 190, 210);
+    stale.header.event_time = 2;
+    stale.header.receive_time = stale.header.available_time = 4;
+    Plan strategy;
+    strategy.orders[1] = {{1, 1, Side::Buy, OrderType::Market, 2, 0}};
+    EXPECT_THROW(run_backtest({quote(1, 190, 210), quote(2, 190, 210), split, stale}, strategy, 1000, tick), std::invalid_argument);
+    EXPECT_EQ(strategy.event_calls, 0U);
+    EXPECT_EQ(strategy.execution_calls, 0U);
+}
+TEST(Execution, SameTimeSequenceRegressionsAreRejectedPerInstrument) {
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    auto first = quote(10, 100, 110);
+    first.header.event_time = first.header.receive_time = first.header.available_time = 1;
+    auto stale = quote(9, 90, 100);
+    stale.header.event_time = 1;
+    stale.header.receive_time = stale.header.available_time = 2;
+    Plan invalid;
+    EXPECT_THROW(run_backtest({first, stale}, invalid, 1000, tick), std::invalid_argument);
+    EXPECT_EQ(invalid.event_calls, 0U);
+    stale.header.instrument = 2;
+    Plan valid;
+    EXPECT_NO_THROW(run_backtest({first, stale}, valid, 1000, tick));
+    EXPECT_EQ(valid.event_calls, 2U);
+}
+TEST(Execution, BarModelRejectsMixedEventsAndMultipleInstruments) {
+    const Event split{{2, 2, 2, 2, 1}, Split{2, 1}};
+    Plan strategy;
+    EXPECT_THROW(run_backtest({bar(1, 100, 100), split}, strategy, 1000), std::invalid_argument);
+    EXPECT_THROW(run_backtest({bar(1, 100, 100), quote(2, 90, 110)}, strategy, 1000), std::invalid_argument);
+    auto other = bar(2, 100, 100);
+    other.header.instrument = 2;
+    EXPECT_THROW(run_backtest({bar(1, 100, 100), other}, strategy, 1000), std::invalid_argument);
+    EXPECT_EQ(strategy.event_calls, 0U);
+}
+TEST(Execution, BarModelRequiresDistinctNonoverlappingFixedGridIntervals) {
+    ExecutionConfig config;
+    config.bar_duration_ns = 2;
+    const auto at = [](std::uint64_t sequence, Timestamp time) {
+        auto event = bar(sequence, 100, 100);
+        event.header.event_time = event.header.receive_time = event.header.available_time = time;
+        return event;
+    };
+    Plan strategy;
+    EXPECT_THROW(run_backtest({at(1, 2), at(2, 3)}, strategy, 1000, config), std::invalid_argument);
+    EXPECT_THROW(run_backtest({at(1, 2), at(2, 5)}, strategy, 1000, config), std::invalid_argument);
+    EXPECT_THROW(run_backtest({at(1, 2), at(2, 4), at(3, 4)}, strategy, 1000, config), std::invalid_argument);
+    EXPECT_THROW(run_backtest({at(1, 1)}, strategy, 1000, config), std::invalid_argument);
+    EXPECT_EQ(strategy.event_calls, 0U);
+    EXPECT_NO_THROW(run_backtest({at(1, 2), at(2, 4), at(3, 8)}, strategy, 1000, config));
+}
+TEST(Execution, DelayedBarCannotSpendProceedsFromALaterEconomicOpen) {
+    // Formerly buyA used proceeds from B's open at time3 to finance A's
+    // delayed-receipt open at time2. Both delayed and multiasset bars are rejected.
+    auto a = bar(1, 100, 100);
+    auto b = bar(2, 100, 100);
+    b.header.instrument = 2;
+    auto sell_b = bar(3, 100, 100);
+    sell_b.header.instrument = 2;
+    sell_b.header.event_time = sell_b.header.receive_time = sell_b.header.available_time = 4;
+    auto delayed_a = bar(4, 100, 100);
+    delayed_a.header.event_time = 3;
+    delayed_a.header.receive_time = delayed_a.header.available_time = 6;
+    Plan strategy;
+    strategy.orders[1] = {{1, 2, Side::Buy, OrderType::Market, 1, 0}};
+    strategy.orders[2] = {{2, 2, Side::Sell, OrderType::Market, 1, 0}, {3, 1, Side::Buy, OrderType::Market, 1, 0}};
+    EXPECT_THROW(run_backtest({a, b, sell_b, delayed_a}, strategy, 100, {}), std::invalid_argument);
+    EXPECT_EQ(strategy.event_calls, 0U);
+    EXPECT_EQ(strategy.execution_calls, 0U);
 }
 TEST(Execution, IdenticalInputAndFreshStrategiesProduceIdenticalLedger) {
     const std::vector<Event> events{bar(1, 100, 110), bar(2, 120, 130), bar(3, 140, 150)};
@@ -283,7 +379,9 @@ TEST(Strategies, MovingAverageObservesTrailingClosesAndTradesLaterOpens) {
 TEST(Strategies, MovingAverageResetsOnSplit) {
     MovingAverageCross strategy(1, 2, 2, 3);
     const Event split{{3, 3, 3, 3, 1}, Split{2, 1}};
-    const auto r = run_backtest({bar(1, 100, 100), bar(2, 110, 110), split, bar(4, 60, 60)}, strategy, 1000);
+    ExecutionConfig tick;
+    tick.model = ExecutionModel::Tick;
+    const auto r = run_backtest({quote(1, 90, 110), quote(2, 100, 120), split, quote(4, 55, 65)}, strategy, 1000, tick);
     EXPECT_TRUE(r.reports.empty());
     EXPECT_EQ(r.pending_orders, 0U);
 }

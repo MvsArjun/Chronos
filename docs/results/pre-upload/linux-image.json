@@ -1,0 +1,6 @@
+{
+  "url": "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.vmdk",
+  "sha256": "9a1e3959c9f4ad9d4752101fd4ff9a43191fb7d72e61fa20e033f9fd235ce794",
+  "bytes": 590749696,
+  "checksums_url": "https://cloud-images.ubuntu.com/noble/current/SHA256SUMS"
+}

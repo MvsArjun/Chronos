@@ -1,0 +1,1 @@
+{'schema_version': 1, 'money_scale': 10000, 'cash_fixed': 9908574540, 'equity_fixed': 9908574540, 'fees_fixed': 218600, 'realized_pnl_fixed': -91206860, 'unrealized_pnl_fixed': 0, 'income_fixed': 0, 'pending_orders': 0, 'positions': {'1': {'quantity': 0, 'cost_basis_fixed': 0, 'last_price_fixed': 1007668}}}

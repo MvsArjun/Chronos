@@ -1,0 +1,46 @@
+[0/2] Re-checking globbed directories...
+[1/45] Building CXX object CMakeFiles/chronos.dir/src/market_data/data.cpp.o
+[2/45] Linking CXX static library libchronos.a
+[3/45] Building CXX object CMakeFiles/chronos_cli.dir/src/main.cpp.o
+[4/45] Linking CXX executable chronos_cli
+[5/45] Building CXX object CMakeFiles/chronos_tests.dir/tests/analytics_tests.cpp.o
+[6/45] Building CXX object CMakeFiles/chronos_tests.dir/tests/concurrency_tests.cpp.o
+[7/45] Building CXX object CMakeFiles/chronos_tests.dir/tests/data_tests.cpp.o
+[8/45] Building CXX object CMakeFiles/chronos_bench.dir/benchmarks/bench.cpp.o
+[9/45] Building CXX object CMakeFiles/chronos_tests.dir/tests/execution_tests.cpp.o
+[10/45] Building CXX object CMakeFiles/chronos_latency.dir/benchmarks/latency.cpp.o
+[11/45] Linking CXX executable chronos_latency
+[12/45] Building CXX object _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
+[13/45] Building CXX object _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
+[14/45] Building CXX object CMakeFiles/_core.dir/python/bindings/module.cpp.o
+[15/45] Building CXX object _deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+[16/45] Linking CXX static library lib/libgtest.a
+[17/45] Linking CXX static library lib/libgmock.a
+[18/45] Linking CXX static library lib/libgmock_main.a
+[19/45] Building CXX object _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[20/45] Linking CXX static library lib/libgtest_main.a
+[21/45] Linking CXX executable chronos_tests
+[22/45] Linking CXX shared module /home/chronos/verification/chronos/python/chronos/_core.cpython-312-x86_64-linux-gnu.so
+[23/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/benchmark.cc.o
+[24/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/benchmark_api_internal.cc.o
+[25/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/benchmark_name.cc.o
+[26/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/benchmark_runner.cc.o
+[27/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/check.cc.o
+[28/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/colorprint.cc.o
+[29/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/commandlineflags.cc.o
+[30/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/benchmark_register.cc.o
+[31/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/complexity.cc.o
+[32/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/console_reporter.cc.o
+[33/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/counter.cc.o
+[34/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/csv_reporter.cc.o
+[35/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/perf_counters.cc.o
+[36/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/json_reporter.cc.o
+[37/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/reporter.cc.o
+[38/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/statistics.cc.o
+[39/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/string_util.cc.o
+[40/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/timers.cc.o
+[41/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark_main.dir/benchmark_main.cc.o
+[42/45] Building CXX object _deps/googlebenchmark-build/src/CMakeFiles/benchmark.dir/sysinfo.cc.o
+[43/45] Linking CXX static library _deps/googlebenchmark-build/src/libbenchmark.a
+[44/45] Linking CXX static library _deps/googlebenchmark-build/src/libbenchmark_main.a
+[45/45] Linking CXX executable chronos_bench

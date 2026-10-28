@@ -46,7 +46,9 @@ It is an offline batch operation with O(n) auxiliary memory and O(n log n) sort;
 it is excluded from dispatch-only measurements and benchmarked separately.
 Global sequence identifiers are unique, but gaps are allowed. They are not a
 claim of exchange-feed gap recovery. Late events become visible when available;
-they cannot retroactively fill an earlier order. Clock progression is logical,
+generic replay preserves them, while backtests reject per-instrument economic-time
+regressions before callbacks so stale prices cannot replace current state or fill
+orders. Clock progression is logical,
 without wall-clock pacing. For bars the exchange timestamp is interval end;
 the configured duration defines earliest possible next-open execution.
 
@@ -80,7 +82,10 @@ maps/vectors and allocates state/reports. It is not an allocation-free hot loop.
 ## Financial assumptions and Python boundary
 
 Execution and portfolio logic are separated from transport. Bar execution uses a
-later eligible open with explicit assumed liquidity. Quote execution uses later
+later eligible open with explicit assumed liquidity. It accepts timely, pure Bar
+input for one instrument on a fixed nonoverlapping grid. Unsupported multi-asset,
+mixed or delayed bar input is rejected; atomic multi-asset bar batches are not
+implemented. Quote execution uses later
 displayed sides/sizes shared FIFO; trades mark but do not fabricate liquidity.
 Limits include adverse slippage/impact, and risk checks run at fill time. There is
 no borrow, margin, market-depth queue position or intrabar path model. See

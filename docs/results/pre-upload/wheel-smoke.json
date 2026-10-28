@@ -1,0 +1,9 @@
+{
+  "wheel": "chronos_quant_engine-0.1.0-cp312-cp312-win_amd64.whl",
+  "wheel_sha256": "a9ce9edc1b80a06151d849718924847fe852299b10771a7d31b738c16a52ed5e",
+  "isolated_import": true,
+  "backtest_quantity": 10,
+  "var_decimal_boundary": 9,
+  "rank_one_volatility": 114.44239617737442,
+  "source_sha256": "854ef84ed3ffc0efbaeb0325779d47552668640047c4a62897f62ccc6aa2415d"
+}

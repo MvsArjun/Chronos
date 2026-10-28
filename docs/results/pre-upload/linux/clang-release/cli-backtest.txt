@@ -1,0 +1,1 @@
+{"cash_fixed":9989942380,"equity_fixed":9999947860,"fees_fixed":100,"fills":1,"execution_reports":1,"pending":0}

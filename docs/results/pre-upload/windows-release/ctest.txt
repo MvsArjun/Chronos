@@ -1,0 +1,7 @@
+Test project C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/build/release
+    Start 1: chronos_tests
+1/1 Test #1: chronos_tests ....................   Passed    1.15 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   2.16 sec

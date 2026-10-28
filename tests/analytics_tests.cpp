@@ -63,6 +63,33 @@ TEST(Covariance, RejectsInvalidMatrices) {
     EXPECT_THROW(portfolio_volatility({1}, {{-1}}), std::invalid_argument);
     EXPECT_THROW(beta({1, 2}, {1, 1}), std::domain_error);
 }
+TEST(Covariance, RankDeficientUnequalScalesAndPermutation) {
+    std::vector<double> v{0.0003427698826407296, 0.40292055875370403,
+                          -0.0014391140288242679, -767.7286890404523,
+                          0.0031402142979679243, 80.66934754730025};
+    for (std::size_t rotation = 0; rotation < v.size(); ++rotation) {
+        Matrix c(v.size(), std::vector<double>(v.size()));
+        long double exposure = 0;
+        for (std::size_t i = 0; i < v.size(); ++i) {
+            exposure += static_cast<long double>(v[i]) / static_cast<long double>(v.size());
+            for (std::size_t j = 0; j < v.size(); ++j) c[i][j] = v[i] * v[j];
+        }
+        EXPECT_NEAR(portfolio_volatility(std::vector<double>(v.size(), 1.0 / static_cast<double>(v.size())), c, 1),
+                    static_cast<double>(std::abs(exposure)), 1e-10);
+        std::rotate(v.begin(), v.begin() + 1, v.end());
+    }
+}
+TEST(Covariance, ValidationToleranceDoesNotEraseSmallPositiveVariance) {
+    EXPECT_NEAR(portfolio_volatility({0, 1}, {{1e12, 0}, {0, 1e-20}}, 1), 1e-10, 1e-24);
+    EXPECT_NEAR(portfolio_volatility({1, 0}, {{1e-20, 0}, {0, 1e12}}, 1), 1e-10, 1e-24);
+    const auto slightly_larger = 1 + 1e-12;
+    EXPECT_NEAR(portfolio_volatility({1, -1}, {{1, 1}, {1, slightly_larger}}, 1),
+                std::sqrt(slightly_larger - 1), 1e-18);
+    // Matrix validation must reject a materially negative direction even when
+    // this particular portfolio is entirely in the positive direction.
+    EXPECT_THROW(portfolio_volatility({0, 1}, {{-.001, 0}, {0, 1}}, 1), std::invalid_argument);
+    EXPECT_THROW(portfolio_volatility({1, 0, 0}, {{1, 2, 2}, {2, 1, 2}, {2, 2, 1}}, 1), std::invalid_argument);
+}
 TEST(Tails, ExactEmpiricalTailMass) {
     std::vector<double> r{-.1, -.2, .1, .2};
     EXPECT_DOUBLE_EQ(historical_var(r, .5), -.1);
@@ -71,6 +98,12 @@ TEST(Tails, ExactEmpiricalTailMass) {
     EXPECT_DOUBLE_EQ(historical_expected_shortfall(r, .95), .2);
     EXPECT_THROW(historical_var(r, 1), std::invalid_argument);
     EXPECT_THROW(historical_var({}, .95), std::invalid_argument);
+}
+TEST(Tails, DecimalConfidenceBoundariesMatchDoubleEmpiricalCDF) {
+    EXPECT_DOUBLE_EQ(historical_var({-1, -2, -3, -4, -5, -6, -7, -8, -9, -10}, .9), 9);
+    EXPECT_DOUBLE_EQ(historical_var({-1, -2, -3, -4, -5}, .8), 4);
+    // Moving one representable confidence above a boundary must move its rank.
+    EXPECT_DOUBLE_EQ(historical_var({-1, -2, -3, -4, -5, -6, -7, -8, -9, -10}, std::nextafter(.9, 1.0)), 10);
 }
 TEST(Risk, Concentration) {
     EXPECT_DOUBLE_EQ(concentration({.5, -.5}), .5);

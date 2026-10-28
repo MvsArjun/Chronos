@@ -1,32 +1,36 @@
-# Chronos engineering audit — 2026-10-28
+# Chronos engineering audit â€” 2026-10-28
 
 ## Disposition
 
-A working C++20 repository, CLI, Python extension, data formats/adapters, strategy
-and accounting engine, analytics/factor workflows, tests, measurements and
-documentation are implemented. The entire original acceptance checklist is
-**not complete**: Linux GCC/Clang, ASan+UBSan and TSan have not been executed on
-this Windows-only host. Supplied presets/CI do not constitute those verifications.
-No claim of production readiness, trading profitability or equivalence to a
-quantitative firm's proprietary infrastructure is made.
+The implemented workflows passed pre-upload verification on Windows GCC 16.2 and
+Ubuntu 24.04.5 with GCC 13.3 and Clang 18.1. Separate Address/UndefinedBehaviorSanitizer
+and ThreadSanitizer builds passed under both Linux compilers. Each of eight final
+build configurations passed 57 C++ cases; the three Release environments also
+passed 26 Python tests and 47 independent numerical checks each.
+
+The code/configuration hash and raw evidence are in
+[pre-upload-verification.md](pre-upload-verification.md). The publication gate
+passed before source upload. This verifies the supported model described below;
+it does not establish production readiness, profitability, authenticated vendor
+history, or equivalence to a firm's private infrastructure.
 
 ## Implemented and exercised
 
 | Acceptance item | Status and evidence |
 |---|---|
-| C++20 build | PASS locally: Windows 11 x64, GCC 16.2.0, CMake 4.4.4, Ninja 1.13.2; Release and Debug. Linux GCC/Clang unverified. |
+| C++20 build | PASS: Windows GCC 16.2 Release/Debug; Ubuntu GCC 13.3 and Clang 18.1 Release plus separate sanitizer builds. |
 | Historical loading/validation | PASS: strict CSV, explicit-endian binary/CRC, exact-schema Parquet, synthetic bars/trades and trade/quote samples. |
 | Deterministic replay | PASS: availability/event/sequence total order, duplicate rejection, logical clock, equal serial/pipeline checksums and repeated ledger/report tests. |
-| SPSC correctness/concurrency | PASS: full/empty, wrap, nontrivial object lifetime, 500,000-item FIFO stress, saturation/backpressure, handler failures and stop/drain. Lock-free index atomic requirement is checked for this x64 target. TSan remains unrun. |
+| SPSC correctness/concurrency | PASS: FIFO/lifetime/saturation/stop tests and 500,000-item stress; both Linux TSan builds passed without race reports. Canary controls verify the runtime detects races. |
 | Pipeline measurement | PASS: Google Benchmark repetitions, single-thread baselines, separate preparation/dispatch, end-to-end bounded transport and sampled residence distributions. |
-| Event-driven backtest | PASS: market/limit, cancel, later bar-open/quote matching, partial fills, shared liquidity, costs, risk checks and two example strategies. |
+| Event-driven backtest | PASS within explicit contracts: timely single-instrument pure bars; multi-instrument ticks; market/limit/cancel, partial fills, costs and fill-time risk checks. Late economic regressions are rejected. |
 | Accounting independent validation | PASS: exact hand-calculated reversal/fee examples, random transitions versus a separate fractional-average reference, overflow and ledger identity tests. |
-| Risk/return independent validation | PASS: 39 NumPy/SciPy checks using compiled C++ outputs, including 12 explicit undefined/invalid-input cases. |
+| Risk/return independent validation | PASS: 47 NumPy/SciPy checks per Release environment, including 13 explicit error cases and VaR/singular-covariance boundary regressions. |
 | Factor research | PASS on synthetic suitable inputs: momentum, value, quality and low volatility; publication-aware formation, delayed close execution, rebalancing, drifted turnover and costs. Historical vendor PIT coverage is unverified. |
 | Python bindings | PASS: owning batches, strategy/report APIs, Parquet, immutable shared-batch native runs, configuration snapshot, retained callback snapshots and an installable CPython 3.12 Windows wheel smoke test. |
 | CLI/examples | PASS: generation, binary packing, serial replay, pipeline, bar and tick backtest, all four factors and report/Parquet workflow. |
-| Unit/integration/property/regression | PASS: 48 C++ tests in each of Release and Debug; 26 Python tests; fixed seeds and fixtures. |
-| Sanitizers | **INCOMPLETE**: ASan+UBSan and separate TSan presets/CI supplied. Unsupported on this local MinGW verification configuration; no Linux runtime exists here. |
+| Unit/integration/property/regression | PASS: 57 C++ cases in every final configuration; 26 Python cases per Release environment; fixed seeds and independent references. |
+| Sanitizers | PASS: GCC and Clang ASan+UBSan and separate TSan builds, 57 C++ cases each. Guest/ephemeral CI mmap setting is documented in sanitizers.md. |
 | Reproducible benchmarks | PASS within documented synthetic scope: source, baseline implementation, raw repetitions, compiler/CPU/flags/data/method and measurement scripts saved. Desktop noise and timer resolution limit interpretation. |
 | Documentation/audit | PASS: architecture, data, financial definitions, numerical results, performance, integration boundaries and outstanding limitations recorded. |
 
@@ -37,10 +41,12 @@ unittest discovery, independent numerical validation, generation, pack, replay,
 pipeline, both execution examples and the full research/report example. Raw logs
 are in [results/checks.json](results/checks.json) and adjacent text files.
 
-* [Release C++ XML](results/cpp-tests.xml): 48 tests, zero failures/errors.
-* [Debug C++ XML](results/cpp-debug-tests.xml): 48 tests, zero failures/errors.
+* [Release C++ XML](results/cpp-tests.xml): 57 tests, zero failures/errors.
+* [Debug C++ XML](results/cpp-debug-tests.xml): 57 tests, zero failures/errors.
 * [Python log](results/python-tests.txt): 26 tests, zero failures, zero skipped.
-* [Independent numerical results](results/numerical.json): 39 passed; largest
+* [Linux matrix](results/pre-upload/linux/matrix.json): all six configurations
+  passed with an unchanged code/configuration hash.
+* [Independent numerical results](results/numerical.json): 47 passed; largest
   observed absolute comparison error 3.25e-15 within specified tolerances.
 * Binary bytes were independently decoded with Python struct and checked against
   zlib.crc32; all payloads and large uint64 sequences round-trip through Parquet.
@@ -52,30 +58,29 @@ Additional development checks included warning-enabled C++ compilation and a
 PowerShell syntax parse of the Windows bootstrap script. The complete bootstrap
 script was not run from a clean machine; its equivalent manual dependency/build
 workflow was run. clang-format, clang-tidy, perf, Valgrind, real exchange adapters
-and GitHub Actions were not executed. A first example run exposed a factor-name
+were not executed. At the pre-upload checkpoint, GitHub Actions had not yet
+executed; the complete local Linux matrix did pass. A first example run exposed a factor-name
 mismatch (`volatility` versus `low_volatility`); it was corrected and the entire
 workflow rerun successfully. No failed run is presented as a successful result.
 
 ## Measurements
 
-See [performance.md](performance.md) for exact scope and raw links. On the recorded
-Ryzen 5 6600H Windows host, final median wall times per 10,000 synthetic events
-were approximately 0.507 ms for bounded transport/dispatch, 2.077 ms for the
-buy-and-hold backtest and 3.652 ms for checked binary reading. These correspond
-to approximately 19.72M, 4.81M and 2.74M events/second in those distinct workloads.
+See [performance.md](performance.md) for the current exact scope, timings and raw
+links. The final Windows medians per 10,000 synthetic events were
+1.451 ms for bounded transport,
+3.477 ms for the validated backtest and
+4.384 ms for checked binary reading. Background
+load and scheduling were not controlled; differing scopes must not be compared
+as equivalent production operations. Both Linux Release configurations also ran
+measurements; those results are explicitly VMware guest results.
 
-The CRC table experiment reduced binary-read median from 8.012 to 3.652 ms in
-the recorded baseline/final runs. Retained bitwise CRC can be selected with
-`CHRONOS_CRC_BASELINE=ON`. Growing/reserved/arena containers made 13/1/0 upstream
-allocations per 4,096 events. No custom allocator was adopted into the engine.
-Observed process peak RSS was about 8.21 MiB for the benchmark workload; this is
-not a large-dataset memory bound. The measured Event is 88 bytes, alignment 8.
-
-Direct SPSC-pair p50 was below the 100 ns timer tick and indistinguishable from
-the clock baseline. Its per-operation latency is **unresolved**, not zero. Queue
-residence includes backlog/scheduling; it is not exchange latency. Python
-interface numbers are batch-average convenience-call timings. All measurements
-are synthetic, with no affinity isolation or frequency control.
+The retained CRC baseline and current table implementation produce identical
+canonical bytes. Container experiments made 13/1/0 upstream allocations for
+growing/reserved/arena storage; no custom allocator was adopted. Observed Windows
+benchmark peak RSS was 9.86 MiB,
+which is not a large-dataset scalability bound. Event size was 88 bytes/alignment8.
+Direct queue-pair latency remained below the Windows timer's resolving power;
+it is reported as unresolved, not zero or exchange latency.
 
 ## Review findings resolved
 
@@ -102,10 +107,20 @@ are synthetic, with no affinity isolation or frequency control.
 8. **Measured bottleneck:** bitwise CRC became a portable table implementation with
    preserved bytes. Arena experiments did not justify allocator complexity.
 
+9. **Stale state and bar causality:** economic watermarks reject stale quote/
+   pre-split state before callbacks. The bar contract rejects unsupported delayed,
+   mixed, asynchronous/multi-asset and overlapping grids instead of funding an
+   earlier modeled open with later proceeds.
+10. **Numerical/build portability:** decimal VaR boundaries match the double
+    confidence convention; pivoted covariance validation handles singular
+    roundoff while preserving small positive variance. Preset schema5 agrees
+    with the declared CMake minimum. Compiler metadata comes from CMake cache.
+
 ## Known limitations and technical debt
 
-* **Platform verification:** Linux compiler compatibility and all sanitizer runs
-  remain the first unfinished acceptance work. CI must actually run and be read.
+* **Platform scope:** the recorded Windows/Ubuntu compiler matrix is verified.
+  Other architectures and toolchain/runtime combinations remain outside that
+  evidence. TSan needs a compatible address layout; see sanitizers.md.
 * **Data integrity/provenance:** CRC detects accidental corruption, not malicious
   modification. Metadata is opaque, so currency, instrument mapping, adjustment
   basis and provenance are caller contracts. C++ writes are not atomic; stage and
@@ -117,8 +132,9 @@ are synthetic, with no affinity isolation or frequency control.
 * **Replay clock:** logical availability time with reset/repeat is implemented.
   Configurable wall-clock pacing, checkpoint/resume and alternative clock modes
   are not implemented. A different clock must not expose unavailable data.
-* **Execution:** fixed per-run bar duration, no exchange session calendar or
-  variable interval starts. Bar liquidity is assumed, limits only fill at an
+* **Execution:** one-instrument timely pure-Bar fixed grids; no atomic multi-asset
+  bar batches, asynchronous/mixed bar portfolios, exchange session calendar or
+  variable interval starts. Tick input rejects per-instrument economic regressions. Bar liquidity is assumed, limits only fill at an
   eligible later open. Quotes have no known queue position or replenishment;
   trades do not fabricate executable liquidity. Book updates are stored/replayed,
   not rebuilt into a full exchange book. No venue/auction/latency/settlement model.
@@ -150,8 +166,8 @@ are synthetic, with no affinity isolation or frequency control.
 
 ## Recommended next work
 
-1. Run the supplied Linux GCC/Clang and sanitizer matrix; fix failures and attach
-   actual logs before declaring those acceptance items complete.
+1. Keep the now-verified GCC/Clang/sanitizer matrix green as compilers, kernels
+   and datasets change, preserving new logs and source hashes.
 2. Add a small licensed real trade/quote corpus with explicit exchange/session,
    instrument, timestamp and corporate-action contracts; compare independent ledgers.
 3. Add chunked reading and measure realistic memory/throughput, then profile with
@@ -160,6 +176,6 @@ are synthetic, with no affinity isolation or frequency control.
    research use case, with new independent accounting/causality fixtures.
 5. Add historical universe/adjustment provenance and validated PIT fundamental data.
 
-The implemented local workflows are functional and measured. The unresolved
+The supported local workflows passed the recorded pre-upload matrix. The unresolved
 items above remain explicit engineering work rather than implied production
 capabilities.

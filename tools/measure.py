@@ -18,7 +18,14 @@ args = parser.parse_args()
 build, output = args.build.resolve(), args.output.resolve()
 output.mkdir(parents=True, exist_ok=True)
 suffix = ".exe" if os.name == "nt" else ""
-compiler = os.environ.get("CXX", "g++")
+cache = {}
+for line in (build / "CMakeCache.txt").read_text(encoding="utf-8").splitlines():
+    if line and not line.startswith(("#", "//")) and "=" in line:
+        key, value = line.split("=", 1)
+        cache[key.split(":", 1)[0]] = value
+compiler = cache.get("CMAKE_CXX_COMPILER", os.environ.get("CXX", "g++"))
+build_type = cache.get("CMAKE_BUILD_TYPE", "unknown")
+flags = " ".join((cache.get("CMAKE_CXX_FLAGS", ""), cache.get("CMAKE_CXX_FLAGS_" + build_type.upper(), ""))).strip()
 model = platform.processor()
 if os.name == "nt":
     model = subprocess.check_output(["powershell", "-NoProfile", "-Command", "(Get-CimInstance Win32_Processor).Name"], text=True).strip()
@@ -27,7 +34,9 @@ elif Path("/proc/cpuinfo").exists():
 environment = {"cpu": model, "physical_cores": psutil.cpu_count(logical=False), "logical_cores": psutil.cpu_count(),
                "ram_bytes": psutil.virtual_memory().total, "os": platform.platform(),
                "compiler": subprocess.check_output([compiler, "--version"], text=True).splitlines()[0],
-               "flags": "CMake Release: -O3 -DNDEBUG; C++20; no native CPU flag",
+               "flags": f"CMake {build_type}: {flags}; C++20",
+               "build_type": build_type, "compiler_path": compiler,
+               "crc_baseline": cache.get("CHRONOS_CRC_BASELINE") == "ON",
                "python": platform.python_version(), "dataset_events": 10000,
                "dataset": "deterministic synthetic bars, seed=1, one instrument",
                "clock": "steady_clock/perf_counter; no affinity pinning; desktop background load",

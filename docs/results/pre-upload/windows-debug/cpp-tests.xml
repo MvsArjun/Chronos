@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="57" failures="0" disabled="0" errors="0" time="0.194" timestamp="2026-10-28T21:52:40.427" name="AllTests">
+  <testsuite name="Portfolio" tests="5" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-10-28T21:52:40.427">
+    <testcase name="IndependentlyCalculatedReversalAndFeeLedger" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="29" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.427" classname="Portfolio" />
+    <testcase name="DividendAndExactSplitPreserveLedgerIdentity" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="51" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.427" classname="Portfolio" />
+    <testcase name="OverflowAndInvalidFillDoNotMutateLedger" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="65" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.427" classname="Portfolio" />
+    <testcase name="ExactCostAllocationSupportsLargeNotionalWithoutWideIntegers" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="74" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.427" classname="Portfolio" />
+    <testcase name="RandomTransitionsMatchIndependentFractionalAverageReference" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="80" status="run" result="completed" time="0.001" timestamp="2026-10-28T21:52:40.427" classname="Portfolio" />
+  </testsuite>
+  <testsuite name="Execution" tests="17" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.429">
+    <testcase name="BarOrdersUseOnlyLaterOpenAndSharedAssumedLiquidity" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="108" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="LimitCannotFillFromBarHighLowOrAdverseSlipBeyondLimit" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="127" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="QuoteSpreadAndPartialLiquidityAreSharedFifo" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="142" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="RejectsInsufficientCashAndUncoveredSell" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="156" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="CashRiskAlsoCoversFeesOnSell" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="165" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="CancelAfterObservationAndCancelOnSplit" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="178" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="RejectsDelayedCorporateActionsBeforeStrategyCallbacks" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="194" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="CorporateActionsPrecedeSameInstrumentMarketEventsAtEffectiveTime" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="209" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="RegressingExchangeTimeIsRejectedBeforeAnyCallbacks" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="229" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="DelayedBarsAreRejectedBeforeAnyCallbacks" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="243" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="StaleBboCannotFillOrReplaceTheCurrentMark" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="259" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="PostSplitOldPricesAreRejectedBeforeAnyCallbacks" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="274" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="SameTimeSequenceRegressionsAreRejectedPerInstrument" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="287" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="BarModelRejectsMixedEventsAndMultipleInstruments" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="303" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="BarModelRequiresDistinctNonoverlappingFixedGridIntervals" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="313" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="DelayedBarCannotSpendProceedsFromALaterEconomicOpen" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="329" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+    <testcase name="IdenticalInputAndFreshStrategiesProduceIdenticalLedger" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="348" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Execution" />
+  </testsuite>
+  <testsuite name="Strategies" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.429">
+    <testcase name="MovingAverageObservesTrailingClosesAndTradesLaterOpens" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="362" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Strategies" />
+    <testcase name="MovingAverageResetsOnSplit" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/execution_tests.cpp" line="379" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.429" classname="Strategies" />
+  </testsuite>
+  <testsuite name="Data" tests="8" failures="0" disabled="0" skipped="0" errors="0" time="0.058" timestamp="2026-10-28T21:52:40.429">
+    <testcase name="CsvAllPayloadsCanonicalRoundTrip" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="41" status="run" result="completed" time="0.004" timestamp="2026-10-28T21:52:40.429" classname="Data" />
+    <testcase name="CsvSerializationIsIndependentOfGlobalNumericLocale" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="53" status="run" result="completed" time="0.001" timestamp="2026-10-28T21:52:40.434" classname="Data" />
+    <testcase name="CsvRejectsInvalidAndAmbiguousRows" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="67" status="run" result="completed" time="0.012" timestamp="2026-10-28T21:52:40.436" classname="Data" />
+    <testcase name="ResourceLimitsAndEmptyDatasets" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="83" status="run" result="completed" time="0.004" timestamp="2026-10-28T21:52:40.448" classname="Data" />
+    <testcase name="CsvLineEndingsFinalRowAndBoundedInput" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="95" status="run" result="completed" time="0.01" timestamp="2026-10-28T21:52:40.453" classname="Data" />
+    <testcase name="BinaryDeterministicExplicitEndianAndRoundTrip" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="106" status="run" result="completed" time="0.003" timestamp="2026-10-28T21:52:40.464" classname="Data" />
+    <testcase name="BinaryRejectsCorruptionTruncationTrailingAndVersion" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="124" status="run" result="completed" time="0.02" timestamp="2026-10-28T21:52:40.467" classname="Data" />
+    <testcase name="SyntheticFixturesAreDeterministicAndValidated" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="141" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.488" classname="Data" />
+  </testsuite>
+  <testsuite name="Replay" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.488">
+    <testcase name="AvailabilityOrderingTieBreakingAndClock" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="153" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.488" classname="Replay" />
+    <testcase name="DuplicateSequencesAndInvalidHeadersRejected" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/data_tests.cpp" line="171" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.488" classname="Replay" />
+  </testsuite>
+  <testsuite name="Core" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.488">
+    <testcase name="CheckedArithmetic" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="9" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.488" classname="Core" />
+  </testsuite>
+  <testsuite name="Ring" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0.041" timestamp="2026-10-28T21:52:40.488">
+    <testcase name="EmptyFullWrapAndMoveOwnership" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="19" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.488" classname="Ring" />
+    <testcase name="NonemptyDestructionReleasesObjects" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="31" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.489" classname="Ring" />
+    <testcase name="ConcurrentFifoStress" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="36" status="run" result="completed" time="0.041" timestamp="2026-10-28T21:52:40.489" classname="Ring" />
+  </testsuite>
+  <testsuite name="Pipeline" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0.062" timestamp="2026-10-28T21:52:40.530">
+    <testcase name="BlockingAndFifo" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="53" status="run" result="completed" time="0.007" timestamp="2026-10-28T21:52:40.530" classname="Pipeline" />
+    <testcase name="DropSaturationMaintainsSubsequence" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="58" status="run" result="completed" time="0.018" timestamp="2026-10-28T21:52:40.538" classname="Pipeline" />
+    <testcase name="FailFastAndHandlerExceptionsJoinProducer" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="67" status="run" result="completed" time="0.033" timestamp="2026-10-28T21:52:40.557" classname="Pipeline" />
+    <testcase name="ShutdownDuringActivityDrainsAcceptedEvents" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/concurrency_tests.cpp" line="72" status="run" result="completed" time="0.002" timestamp="2026-10-28T21:52:40.590" classname="Pipeline" />
+  </testsuite>
+  <testsuite name="Returns" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.593">
+    <testcase name="HandCalculated" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="9" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.593" classname="Returns" />
+    <testcase name="InvalidAndExtreme" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="18" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.593" classname="Returns" />
+  </testsuite>
+  <testsuite name="Metrics" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.593">
+    <testcase name="HandCalculated" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="27" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.593" classname="Metrics" />
+    <testcase name="DenominatorsAndMissingDataAreExplicit" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="35" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.593" classname="Metrics" />
+    <testcase name="StableLargeOffsetsAndSmallCovariance" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="149" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.593" classname="Metrics" />
+    <testcase name="LongConstantSamplesRemainExactlyConstant" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="158" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.593" classname="Metrics" />
+  </testsuite>
+  <testsuite name="Covariance" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.594">
+    <testcase name="SingularMatrixAndBeta" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="45" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Covariance" />
+    <testcase name="RejectsInvalidMatrices" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="57" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Covariance" />
+    <testcase name="RankDeficientUnequalScalesAndPermutation" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="66" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Covariance" />
+    <testcase name="ValidationToleranceDoesNotEraseSmallPositiveVariance" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="82" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Covariance" />
+  </testsuite>
+  <testsuite name="Tails" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.594">
+    <testcase name="ExactEmpiricalTailMass" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="93" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Tails" />
+    <testcase name="DecimalConfidenceBoundariesMatchDoubleEmpiricalCDF" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="102" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Tails" />
+  </testsuite>
+  <testsuite name="Risk" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-10-28T21:52:40.594">
+    <testcase name="Concentration" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="108" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Risk" />
+  </testsuite>
+  <testsuite name="Arithmetic" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.027" timestamp="2026-10-28T21:52:40.594">
+    <testcase name="FixedPointBoundaries" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="113" status="run" result="completed" time="0." timestamp="2026-10-28T21:52:40.594" classname="Arithmetic" />
+    <testcase name="MultiplicationAgainstWideIntegerOracle" file="C:/Users/mvsar/OneDrive/Documents/ChatGPT/Chronos/tests/analytics_tests.cpp" line="130" status="run" result="completed" time="0.027" timestamp="2026-10-28T21:52:40.594" classname="Arithmetic" />
+  </testsuite>
+</testsuites>

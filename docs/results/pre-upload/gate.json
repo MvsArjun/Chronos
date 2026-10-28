@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "source_sha256": "854ef84ed3ffc0efbaeb0325779d47552668640047c4a62897f62ccc6aa2415d",
+  "issues": [],
+  "windows_cpp_tests_per_build": 57,
+  "python_tests_per_release": 26,
+  "independent_numerical_checks_per_release": 47,
+  "required_linux_configurations": 6
+}

@@ -1,0 +1,10 @@
+ctest: PASS
+python-tests: PASS
+numerical: PASS
+cli-generate: PASS
+cli-pack: PASS
+cli-replay: PASS
+cli-pipeline: PASS
+cli-backtest: PASS
+cli-tick: PASS
+research-example: PASS

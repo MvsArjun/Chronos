@@ -25,7 +25,13 @@ repeatable run. The supplied examples are `BuyAndHold` and
 The simulation has no wall-clock dependency. At equal availability timestamps,
 orders cannot execute until a later timestamp, even when sequence is later.
 This conservative rule also prevents zero-time response to another event in the
-same timestamp batch. Late historical ticks cannot supply retrospective fills.
+same timestamp batch. In addition, each instrument must have strictly increasing
+`(event_time, sequence)` keys in availability order. The watermark includes
+corporate actions and book updates. A stale BBO cannot replace a newer quote or
+supply a fill, and an old pre-split price cannot restore the old share-unit scale.
+The complete backtest is rejected before any strategy or execution callback when
+this condition fails. Generic storage and replay continue to support late data;
+callers must normalize or otherwise reconcile it before using this execution model.
 
 ## Bar model
 
@@ -36,9 +42,29 @@ For irregular sessions, daylight-saving changes or bars with variable duration,
 split the dataset/configuration appropriately; this version does not carry a
 per-event bar start timestamp or exchange calendar.
 
+The bar backtest has a deliberately restricted supported input contract:
+
+- One instrument and only `Bar` payloads. Quote/trade/book and corporate-action
+  events must use the tick model or a separate research workflow.
+- Immediate bar delivery: `event_time == receive_time == available_time`.
+  Delayed bars are rejected rather than allowing a historical open to spend cash
+  obtained from a later economic event.
+- One fixed duration and phase: all end timestamps lie on the first bar's grid,
+  every interval is distinct, and intervals do not overlap. The first interval
+  may not begin before Unix epoch zero. Gaps of whole intervals are allowed, with
+  no execution assumed inside the gap; callers must distinguish closed sessions
+  from missing data before simulation.
+
+Full-input validation rejects unsupported mixed, multi-instrument, delayed,
+duplicate, overlapping or off-grid bar datasets before any callbacks. This avoids
+exposing one instrument's close before matching another instrument's earlier open,
+and avoids retroactive cancellations or corporate-action entitlements within an
+outstanding bar. Atomic multi-asset bar batches and intrabar actions are not
+implemented. The tick simulator remains multi-instrument and supports the timely
+corporate actions described below.
+
 A pending order can execute at a later bar's open only if
-`bar.event_time - bar_duration_ns >= order.acceptance_time`. A late bar signal
-therefore cannot buy an open that already happened. The full bar is delivered at
+`bar.event_time - bar_duration_ns >= order.acceptance_time`. The full bar is delivered at
 its availability time and reports are delivered at that simulation time;
 `ExecutionReport.time` is **report availability**, not a claim of an observed
 exchange execution timestamp. This is an interval-step simulation, with equity
@@ -144,6 +170,9 @@ storage/replay layer may carry late actions, but this accounting model cannot
 simulate them safely. If multiple actions share an effective time, their explicit
 sequence determines whether a dividend amount is interpreted before or after a
 split; the dataset producer must supply the intended share-unit convention.
+These action-event semantics are supported by tick execution. The pure-Bar
+execution contract rejects corporate-action events; direct `Portfolio` operations
+remain available for separately controlled accounting workflows.
 Splits change quantity and mark while preserving cost basis. Only ratios producing
 an exact whole quantity and exact fixed-point mark are supported. Fractional shares
 and cash in lieu raise an error. Splits cancel all outstanding same-instrument

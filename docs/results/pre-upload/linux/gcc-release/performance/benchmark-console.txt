@@ -1,0 +1,89 @@
+2026-10-28T16:40:26+00:00
+Running /home/chronos/verification/chronos/build/verify-gcc-release/chronos_bench
+Run on (2 X 3293.72 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x2)
+  L1 Instruction 32 KiB (x2)
+  L2 Unified 512 KiB (x2)
+  L3 Unified 16384 KiB (x1)
+Load Average: 1.34, 0.57, 0.38
+------------------------------------------------------------------------------------
+Benchmark                          Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------
+Dispatch                        7036 ns         7036 ns        18483 items_per_second=1.42121G/s
+Dispatch                        7025 ns         7025 ns        18483 items_per_second=1.42339G/s
+Dispatch                        6914 ns         6914 ns        18483 items_per_second=1.44636G/s
+Dispatch_mean                   6991 ns         6992 ns            3 items_per_second=1.43032G/s
+Dispatch_median                 7025 ns         7025 ns            3 items_per_second=1.42339G/s
+Dispatch_stddev                 67.4 ns         67.7 ns            3 items_per_second=13.9349M/s
+Dispatch_cv                     0.96 %          0.97 %             3 items_per_second=0.97%
+SpscRoundTrip                   8.66 ns         8.66 ns     15946160 items_per_second=115.418M/s
+SpscRoundTrip                   8.62 ns         8.61 ns     15946160 items_per_second=116.106M/s
+SpscRoundTrip                   8.62 ns         8.62 ns     15946160 items_per_second=116.017M/s
+SpscRoundTrip_mean              8.64 ns         8.63 ns            3 items_per_second=115.847M/s
+SpscRoundTrip_median            8.62 ns         8.62 ns            3 items_per_second=116.017M/s
+SpscRoundTrip_stddev           0.025 ns        0.028 ns            3 items_per_second=374.421k/s
+SpscRoundTrip_cv                0.29 %          0.32 %             3 items_per_second=0.32%
+Pipeline/real_time            549098 ns       475454 ns          291 items_per_second=18.2117M/s
+Pipeline/real_time            530726 ns       459541 ns          291 items_per_second=18.8421M/s
+Pipeline/real_time            546808 ns       460448 ns          291 items_per_second=18.2879M/s
+Pipeline/real_time_mean       542211 ns       465148 ns            3 items_per_second=18.4473M/s
+Pipeline/real_time_median     546808 ns       460448 ns            3 items_per_second=18.2879M/s
+Pipeline/real_time_stddev      10012 ns         8937 ns            3 items_per_second=344.081k/s
+Pipeline/real_time_cv           1.85 %          1.92 %             3 items_per_second=1.87%
+ReplayDispatch                  6724 ns         6709 ns        20091 items_per_second=1.4906G/s
+ReplayDispatch                  6765 ns         6765 ns        20091 items_per_second=1.47814G/s
+ReplayDispatch                  6681 ns         6681 ns        20091 items_per_second=1.4967G/s
+ReplayDispatch_mean             6723 ns         6718 ns            3 items_per_second=1.48848G/s
+ReplayDispatch_median           6724 ns         6709 ns            3 items_per_second=1.4906G/s
+ReplayDispatch_stddev           42.0 ns         42.8 ns            3 items_per_second=9.4616M/s
+ReplayDispatch_cv               0.62 %          0.64 %             3 items_per_second=0.64%
+ReplayPrepare                 525728 ns       525772 ns          253 items_per_second=19.0197M/s
+ReplayPrepare                 507136 ns       506861 ns          253 items_per_second=19.7293M/s
+ReplayPrepare                 507779 ns       507820 ns          253 items_per_second=19.692M/s
+ReplayPrepare_mean            513548 ns       513484 ns            3 items_per_second=19.4803M/s
+ReplayPrepare_median          507779 ns       507820 ns            3 items_per_second=19.692M/s
+ReplayPrepare_stddev           10553 ns        10652 ns            3 items_per_second=399.371k/s
+ReplayPrepare_cv                2.05 %          2.07 %             3 items_per_second=2.05%
+Backtest                     1323466 ns      1323572 ns          106 items_per_second=7.55531M/s
+Backtest                     1349598 ns      1349610 ns          106 items_per_second=7.40955M/s
+Backtest                     1355525 ns      1355421 ns          106 items_per_second=7.37778M/s
+Backtest_mean                1342863 ns      1342868 ns            3 items_per_second=7.44755M/s
+Backtest_median              1349598 ns      1349610 ns            3 items_per_second=7.40955M/s
+Backtest_stddev                17058 ns        16961 ns            3 items_per_second=94.6696k/s
+Backtest_cv                     1.27 %          1.26 %             3 items_per_second=1.27%
+CsvParse                     2466051 ns      2464961 ns           60 items_per_second=4.05686M/s
+CsvParse                     2369370 ns      2369385 ns           60 items_per_second=4.22051M/s
+CsvParse                     2415693 ns      2415294 ns           60 items_per_second=4.14028M/s
+CsvParse_mean                2417038 ns      2416547 ns            3 items_per_second=4.13922M/s
+CsvParse_median              2415693 ns      2415294 ns            3 items_per_second=4.14028M/s
+CsvParse_stddev                48355 ns        47801 ns            3 items_per_second=81.8282k/s
+CsvParse_cv                     2.00 %          1.98 %             3 items_per_second=1.98%
+BinaryRead                   2200055 ns      2200215 ns           60 items_per_second=4.54501M/s
+BinaryRead                   2219366 ns      2219525 ns           60 items_per_second=4.50547M/s
+BinaryRead                   2201984 ns      2202004 ns           60 items_per_second=4.54132M/s
+BinaryRead_mean              2207135 ns      2207248 ns            3 items_per_second=4.5306M/s
+BinaryRead_median            2201984 ns      2202004 ns            3 items_per_second=4.54132M/s
+BinaryRead_stddev              10636 ns        10670 ns            3 items_per_second=21.8415k/s
+BinaryRead_cv                   0.48 %          0.48 %             3 items_per_second=0.48%
+EventAllocation/0              16787 ns        16780 ns         8482 container_allocations_per_batch=13 container_bytes_per_batch=720.808k items_per_second=244.095M/s
+EventAllocation/0              16456 ns        16458 ns         8482 container_allocations_per_batch=13 container_bytes_per_batch=720.808k items_per_second=248.883M/s
+EventAllocation/0              16805 ns        16805 ns         8482 container_allocations_per_batch=13 container_bytes_per_batch=720.808k items_per_second=243.743M/s
+EventAllocation/0_mean         16683 ns        16681 ns            3 container_allocations_per_batch=13 container_bytes_per_batch=720.808k items_per_second=245.574M/s
+EventAllocation/0_median       16787 ns        16780 ns            3 container_allocations_per_batch=13 container_bytes_per_batch=720.808k items_per_second=244.095M/s
+EventAllocation/0_stddev         196 ns          194 ns            3 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=2.87138M/s
+EventAllocation/0_cv            1.18 %          1.16 %             3 container_allocations_per_batch=0.00% container_bytes_per_batch=0.00% items_per_second=1.17%
+EventAllocation/1               8184 ns         8182 ns        17356 container_allocations_per_batch=1 container_bytes_per_batch=360.448k items_per_second=500.611M/s
+EventAllocation/1               8234 ns         8235 ns        17356 container_allocations_per_batch=1 container_bytes_per_batch=360.448k items_per_second=497.413M/s
+EventAllocation/1               8004 ns         8004 ns        17356 container_allocations_per_batch=1 container_bytes_per_batch=360.448k items_per_second=511.745M/s
+EventAllocation/1_mean          8141 ns         8140 ns            3 container_allocations_per_batch=1 container_bytes_per_batch=360.448k items_per_second=503.256M/s
+EventAllocation/1_median        8184 ns         8182 ns            3 container_allocations_per_batch=1 container_bytes_per_batch=360.448k items_per_second=500.611M/s
+EventAllocation/1_stddev         121 ns          121 ns            3 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=7.52335M/s
+EventAllocation/1_cv            1.49 %          1.48 %             3 container_allocations_per_batch=0.00% container_bytes_per_batch=0.00% items_per_second=1.49%
+EventAllocation/2               8030 ns         8030 ns        17778 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=510.084M/s
+EventAllocation/2               7924 ns         7925 ns        17778 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=516.877M/s
+EventAllocation/2               7881 ns         7882 ns        17778 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=519.662M/s
+EventAllocation/2_mean          7945 ns         7946 ns            3 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=515.541M/s
+EventAllocation/2_median        7924 ns         7925 ns            3 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=516.877M/s
+EventAllocation/2_stddev        76.8 ns         76.2 ns            3 container_allocations_per_batch=0 container_bytes_per_batch=0 items_per_second=4.9265M/s
+EventAllocation/2_cv            0.97 %          0.96 %             3 container_allocations_per_batch=0.00% container_bytes_per_batch=0.00% items_per_second=0.96%

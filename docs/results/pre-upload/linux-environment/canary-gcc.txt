@@ -1,0 +1,25 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=9547)
+  Write of size 4 at 0x7ffc6248e3e4 by main thread:
+    #0 main /tmp/chronos-tsan-canary.cpp:2 (chronos-tsan-canary-gcc+0x149f) (BuildId: f472f431b894fce090754a6333c25438766b4fda)
+
+  Previous write of size 4 at 0x7ffc6248e3e4 by thread T1:
+    #0 operator() /tmp/chronos-tsan-canary.cpp:2 (chronos-tsan-canary-gcc+0x1350) (BuildId: f472f431b894fce090754a6333c25438766b4fda)
+    #1 __invoke_impl<void, main()::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (chronos-tsan-canary-gcc+0x1350)
+    #2 __invoke<main()::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (chronos-tsan-canary-gcc+0x1350)
+    #3 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (chronos-tsan-canary-gcc+0x1350)
+    #4 operator() /usr/include/c++/13/bits/std_thread.h:299 (chronos-tsan-canary-gcc+0x1350)
+    #5 _M_run /usr/include/c++/13/bits/std_thread.h:244 (chronos-tsan-canary-gcc+0x1350)
+    #6 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is stack of main thread.
+
+  Location is global '<null>' at 0x000000000000 ([stack]+0x203e4)
+
+  Thread T1 (tid=9549, finished) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 <null> <null> (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /tmp/chronos-tsan-canary.cpp:2 in main
+==================

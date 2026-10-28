@@ -26,6 +26,6 @@ test_stable_ties_and_missing_values (test_research.ResearchTests.test_stable_tie
 test_turnover_uses_drifted_weights (test_research.ResearchTests.test_turnover_uses_drifted_weights) ... ok
 
 ----------------------------------------------------------------------
-Ran 26 tests in 4.849s
+Ran 26 tests in 2.617s
 
 OK

@@ -2,8 +2,8 @@
   "operation": "empty native backtest call, includes Python call/GIL transition/config copy/result creation",
   "samples": 200,
   "calls_per_sample": 100,
-  "p50_ns_per_call": 686.5,
-  "p90_ns_per_call": 1141.0,
-  "p99_ns_per_call": 1314.0,
+  "p50_ns_per_call": 963.0,
+  "p90_ns_per_call": 2008.0,
+  "p99_ns_per_call": 8001.0,
   "note": "batch averages; not individual-call tail latency or pure ABI cost"
 }

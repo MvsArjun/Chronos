@@ -23,3 +23,11 @@
 See audit-report.md for evidence and final status. Linux is the primary intended
 target. The authoring host is Windows without WSL; local checks use a modern
 portable GCC where available. No production-equivalence or profitability claim.
+
+## Pre-upload acceptance recheck
+
+The final supported GCC/Clang Release and separate sanitizer matrix passed on
+Ubuntu, and Windows Release/Debug checks passed. See pre-upload-verification.md
+for exact counts, raw evidence, code hash and scope restrictions. The disposable
+guest was stopped after collection. Wall-clock pacing, real vendor/PIT data and
+additional execution models remain explicit limitations rather than implied features.

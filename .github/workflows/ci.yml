@@ -1,9 +1,12 @@
 name: correctness
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
 jobs:
   linux:
     runs-on: ubuntu-24.04
     strategy:
+      fail-fast: false
       matrix:
         compiler: [gcc, clang]
         preset: [release, asan, tsan]
@@ -13,17 +16,29 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r requirements.txt
+      - name: ThreadSanitizer address-space compatibility
+        if: matrix.preset == 'tsan'
+        run: sudo sysctl -w vm.mmap_rnd_bits=28
       - name: Configure
         run: |
           if [ "${{ matrix.compiler }}" = clang ]; then export CC=clang CXX=clang++; else export CC=gcc CXX=g++; fi
           cmake --preset ${{ matrix.preset }}
       - run: cmake --build --preset ${{ matrix.preset }} -j 2
-      - run: ctest --preset ${{ matrix.preset }}
+      - run: |
+          mkdir -p build/results
+          ctest --preset ${{ matrix.preset }}
         env:
+          GTEST_OUTPUT: xml:${{ github.workspace }}/build/results/cpp-tests.xml
           ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
           TSAN_OPTIONS: halt_on_error=1
       - if: matrix.preset == 'release'
-        run: python tools/run_checks.py
+        run: python tools/run_checks.py --output build/results
       - if: matrix.preset == 'release' && matrix.compiler == 'gcc'
-        run: python tools/measure.py
+        run: python tools/measure.py --output build/results/performance
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-${{ matrix.compiler }}-${{ matrix.preset }}
+          path: build/results
+          if-no-files-found: ignore

@@ -1,0 +1,17 @@
+{
+  "guest": "Ubuntu24.04.5 VMware, kernel6.8.0-147",
+  "default_mmap_rnd_bits": 32,
+  "gcc13_initial_runtime_exit": 66,
+  "gcc_initial_error": "ThreadSanitizer unexpected memory mapping",
+  "verification_mmap_rnd_bits": 28,
+  "correct_canary_after_adjustment": {
+    "gcc": 0,
+    "clang": 0
+  },
+  "intentional_race_canary": {
+    "gcc": 66,
+    "clang": 66,
+    "both_reported_data_race": true
+  },
+  "scope": "Disposable guest only; matching ephemeral Linux CI setup; Windows unchanged"
+}

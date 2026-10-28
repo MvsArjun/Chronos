@@ -46,12 +46,29 @@ the implementation never inverts it.
 
 Portfolio volatility is `sqrt(periods_per_year * w^T C w)`. Weights may be signed
 and need not sum to one. The covariance matrix must be finite, square, symmetric,
-and positive semidefinite. A semidefinite Cholesky factorization checks the matrix
-with relative tolerance `128 * epsilon(double) * max_abs_entry * dimension`.
-Residual diagonal roundoff within this tolerance is clamped to zero; larger
-negative pivots or inconsistent zero pivots fail explicitly. Computation uses
-long-double accumulators where the compiler provides them. Platforms where
-`long double` equals `double` have correspondingly less intermediate precision.
+and positive semidefinite within the declared rounding tolerance
+`delta = 128 * epsilon(double) * max_abs_entry * dimension`. The dimension term
+bounds accumulation across a row; the factor 128 allows double-input rounding
+and subsequent factorization error. A subnormal floor prevents delta underflow
+on platforms with narrow `long double`. A zero matrix returns zero directly.
+
+Validation factors the symmetrized `C + delta*I` with diagonal pivoting, selecting
+the largest remaining diagonal. This validation-only shift prevents a nearly
+zero pivot in a rank-deficient covariance from amplifying roundoff. A materially
+negative eigenvalue cannot be made positive by this small shift and is rejected.
+This is an approximate PSD check, not proof that every accepted double matrix is
+exactly PSD: negative eigenvalues within delta are treated as input rounding.
+
+Reported variance comes from a compensated sum of the quadratic form on the
+**original symmetrized C**, without the validation shift. No positive variance is
+thresholded to zero; for example, a portfolio entirely in a `1e-20` variance
+direction still has volatility `1e-10` even alongside a `1e12` variance direction.
+A negative quadratic form is clamped to zero only when its magnitude is at most
+`delta * sum(w^2)`, the admitted matrix error in that portfolio direction;
+otherwise it fails explicitly. Computation uses long-double accumulators where
+the compiler provides them. Platforms where `long double` equals `double` have
+correspondingly less intermediate precision. Extremely ill-conditioned hedges
+remain limited by the accuracy of the supplied double covariance itself.
 
 Beta is `sample_covariance(asset, market)/sample_variance(market)` on aligned
 equally spaced observations. Constant market returns are undefined. Position
@@ -65,6 +82,12 @@ Loss observations are `L=-r`; positive losses indicate adverse returns. For
 `0 < confidence < 1`, VaR is the empirical inverse CDF:
 `sorted_losses[ceil(n*confidence)-1]`. No interpolation and no zero floor are
 applied. An all-gain sample can therefore have negative VaR and ES.
+The confidence product is evaluated in double precision, matching the public
+input type and NumPy's `inverted_cdf` boundary convention. In particular, 90%
+of ten observations selects rank nine and 80% of five selects rank four;
+promoting the binary confidence to extended precision before multiplication
+would give platform-dependent ranks. One representable confidence step above
+90% selects rank ten in the ten-observation regression fixture.
 
 Expected Shortfall averages the worst `(1-confidence)*n` observations, including
 only the necessary fractional mass at the boundary. For example, with losses
@@ -126,7 +149,9 @@ ctest --test-dir build/release --output-on-failure
 ```
 
 The numerical script uses seed `20261028`, checks nontrivial random samples,
-singular covariance, constant series, negative compounding, bankruptcy, extreme
+singular covariance with unequal scales and axis permutations, small positive
+portfolio variance beside a large variance, decimal VaR boundaries, constant
+series, negative compounding, bankruptcy, extreme
 returns, one-observation tails, and expected exceptions for undefined or invalid
 inputs. Default comparison tolerance is absolute `2e-12` plus relative `2e-11`.
 Those tolerances cover floating-point roundoff in differing evaluation orders;
@@ -140,16 +165,16 @@ Actual execution outcomes belong in the generated report and final audit.
 This document defines the checks and does not assert that an unexecuted build
 or unavailable platform has passed.
 
-## Actual local results — 2026-10-28
+## Actual local results â€” 2026-10-28
 
-The final GCC 16.2.0 / Python 3.12.8 compiled-extension run passed **39 checks**:
-27 numerical comparisons and 12 expected input/domain-error cases. NumPy 2.5.4
+The final GCC 16.2.0 / Python 3.12.8 compiled-extension run passed **47 checks**:
+34 numerical comparisons and 13 expected input/domain-error cases. NumPy 2.5.4
 and SciPy 1.18.1 provide independent references. The largest absolute difference
 among these comparisons was `3.25e-15`; each comparison passed its documented
 absolute `2e-12` plus relative `2e-11` criterion. Full per-calculation errors and
 exception outcomes are in [results/numerical.json](results/numerical.json).
 
-Both Release and Debug C++ suites passed 48 tests, including hand-calculated
+Both Release and Debug C++ suites passed 57 tests, including hand-calculated
 portfolio reversals/fees, a separate fractional-average accounting reference,
 large exact integer allocation, 20,000 multiplication-oracle cases, constant
 series, singular/indefinite matrices and late corporate-action rejection. Python
@@ -166,3 +191,6 @@ These outcomes cover the committed fixtures and synthetic observations. They do
 not verify vendor point-in-time history or cross-platform floating-point identity.
 Factors also require prices and fundamental share counts in consistent split/
 adjustment units. The framework cannot infer or reconcile those units.
+
+The complete pre-upload GCC/Clang/sanitizer matrix also passed; see
+[pre-upload-verification.md](pre-upload-verification.md) for current per-build evidence.

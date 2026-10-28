@@ -101,6 +101,10 @@ inline BacktestResult run_backtest(const std::vector<Event>& events, Strategy& s
     std::vector<execution_detail::Pending> pending;
     std::set<std::uint64_t> event_ids, order_ids;
     std::map<InstrumentId, Timestamp> last_market_time;
+    std::map<InstrumentId, std::pair<Timestamp, std::uint64_t>> economic_watermarks;
+    InstrumentId bar_instrument = 0;
+    Timestamp first_bar_time = 0;
+    Timestamp previous_bar_time = 0;
     std::tuple<Timestamp, Timestamp, std::uint64_t> previous{};
     bool first = true;
     // Validate the entire input before invoking user callbacks or changing state.
@@ -109,6 +113,29 @@ inline BacktestResult run_backtest(const std::vector<Event>& events, Strategy& s
         const auto key = std::tuple{event.header.available_time, event.header.event_time, event.header.sequence};
         if ((!first && key <= previous) || !event_ids.insert(event.header.sequence).second)
             throw std::invalid_argument("backtest input must have unique sequences and availability ordering");
+        const auto economic_key = std::pair{event.header.event_time, event.header.sequence};
+        if (const auto last = economic_watermarks.find(event.header.instrument);
+            last != economic_watermarks.end() && economic_key <= last->second)
+            throw std::invalid_argument("backtest rejects per-instrument economic-time/sequence regressions; generic replay supports late data");
+        economic_watermarks.insert_or_assign(event.header.instrument, economic_key);
+        if (config.model == ExecutionModel::Bar) {
+            if (!std::holds_alternative<Bar>(event.payload))
+                throw std::invalid_argument("bar backtests require pure Bar input; use tick execution for corporate actions");
+            if (event.header.event_time != event.header.receive_time || event.header.event_time != event.header.available_time)
+                throw std::invalid_argument("bar backtests require immediate end-of-interval availability");
+            if (event.header.event_time < config.bar_duration_ns)
+                throw std::invalid_argument("bar interval begins before supported Unix epoch");
+            if (!bar_instrument) {
+                bar_instrument = event.header.instrument;
+                first_bar_time = event.header.event_time;
+            } else if (event.header.instrument != bar_instrument) {
+                throw std::invalid_argument("bar backtests support one instrument; use tick execution for multiple instruments");
+            } else if ((event.header.event_time - first_bar_time) % config.bar_duration_ns != 0 ||
+                       event.header.event_time - previous_bar_time < config.bar_duration_ns) {
+                throw std::invalid_argument("bars must use distinct, nonoverlapping intervals on one fixed-duration grid");
+            }
+            previous_bar_time = event.header.event_time;
+        }
         const bool corporate_action = std::holds_alternative<Dividend>(event.payload) || std::holds_alternative<Split>(event.payload);
         if (corporate_action) {
             if (event.header.available_time != event.header.event_time)

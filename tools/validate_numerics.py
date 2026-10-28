@@ -69,6 +69,22 @@ def main():
     compare("singular_covariance", cpp.covariance(singular.tolist()), np.cov(singular, rowvar=False))
     compare("singular_portfolio", cpp.portfolio_volatility([1, 1], np.cov(singular, rowvar=False).tolist(), 1),
             3 * np.std(r, ddof=1))
+    rank_one = np.array([0.0003427698826407296, 0.40292055875370403,
+                         -0.0014391140288242679, -767.7286890404523,
+                         0.0031402142979679243, 80.66934754730025])
+    for rotation in range(3):
+        vector = np.roll(rank_one, rotation)
+        compare(f"unequal_scale_rank_one_{rotation}",
+                cpp.portfolio_volatility([1 / len(vector)] * len(vector), np.outer(vector, vector).tolist(), 1),
+                abs(np.mean(vector)))
+    compare("small_positive_portfolio_variance",
+            cpp.portfolio_volatility([0, 1], [[1e12, 0], [0, 1e-20]], 1), 1e-10,
+            atol=1e-24, rtol=2e-13)
+    for count, confidence in ((10, .9), (5, .8), (10, float(np.nextafter(.9, 1)))):
+        losses = np.arange(1, count + 1, dtype=float)
+        compare(f"decimal_boundary_VaR_{count}_{confidence!r}",
+                cpp.historical_var((-losses).tolist(), confidence),
+                np.quantile(losses, confidence, method="inverted_cdf"), atol=0, rtol=0)
     compare("constant_volatility", cpp.annualized_volatility([.01] * 10, 252), 0)
     compare("bankruptcy_drawdown", cpp.maximum_drawdown([100, 0]), 1)
     compare("negative_cumulative_return", cpp.cumulative_return([-.2, -.3]), -.44)
@@ -85,6 +101,7 @@ def main():
         "small_sample": lambda: cpp.annualized_volatility([.1], 252),
         "zero_price": lambda: cpp.simple_returns([1, 0]),
         "indefinite_covariance": lambda: cpp.portfolio_volatility([.5, .5], [[1, 2], [2, 1]], 1),
+        "unheld_negative_covariance_direction": lambda: cpp.portfolio_volatility([0, 1], [[-.001, 0], [0, 1]], 1),
         "zero_market_variance": lambda: cpp.beta([1, 2], [1, 1]),
         "invalid_return": lambda: cpp.cumulative_return([-1.01]),
     }

@@ -1,0 +1,17 @@
+{
+  "cpu": "AMD Ryzen 5 6600H with Radeon Graphics",
+  "physical_cores": 2,
+  "logical_cores": 2,
+  "ram_bytes": 4106108928,
+  "os": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "flags": "CMake Release: -O3 -DNDEBUG; C++20",
+  "build_type": "Release",
+  "compiler_path": "/usr/bin/g++",
+  "crc_baseline": false,
+  "python": "3.12.3",
+  "dataset_events": 10000,
+  "dataset": "deterministic synthetic bars, seed=1, one instrument",
+  "clock": "steady_clock/perf_counter; no affinity pinning; desktop background load",
+  "memory_method": "10ms RSS sampling; Windows peak_wset if exposed; lower bound otherwise"
+}

@@ -1,4 +1,5 @@
 build/
+work/
 .venv/
 .tools/
 __pycache__/
